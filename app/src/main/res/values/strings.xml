@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Taller365</string>
+    <string name="lbLogin">Ingresar a un taller</string>
+    <string name="hintLoginCode">Código del taller</string>
+    <string name="btnLogin">Ingresar</string>
+    <string name="btnSign">Crear taller</string>
 </resources>
