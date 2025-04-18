@@ -1,38 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".VehiclesFragment">
 
-    <!-- TODO: Update blank fragment layout -->
- <LinearLayout
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content"
-     android:orientation="horizontal"
-     android:padding="16dp">
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/appBarLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-     <Button
-         android:id="@+id/btnExit"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Salir" />
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/blue"
+            android:theme="@style/NoToolBar">
 
-     <TextView
-         android:id="@+id/tallerCode"
-         android:layout_width="0dp"
-         android:layout_height="wrap_content"
-         android:layout_weight="1"
-         android:gravity="center"
-         android:text="ABC123" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-     <Button
-         android:id="@+id/btnSettings"
-         android:layout_width="wrap_content"
-         android:layout_height="wrap_content"
-         android:text="Ajustes" />
+                <ImageButton
+                    android:id="@+id/btnLogout"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Salir"
+                    android:src="@drawable/logout_24px"
+                    app:tint="@color/white" />
 
- </LinearLayout>
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
 
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="@string/app_name"
+                        android:textColor="@color/white" />
 
+                    <TextView
+                        android:id="@+id/tallerCode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="AAA000"
+                        android:textColor="@color/white" />
+
+                </LinearLayout>
+
+                <ImageButton
+                    android:id="@+id/btnSettings"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="Ajustes"
+                    android:src="@drawable/settings_24px"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+
+        </androidx.appcompat.widget.Toolbar>
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/appBarLayout"
+        android:orientation="horizontal"
+        android:padding="12dp">
+
+        <EditText
+            android:id="@+id/searchInput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/search_background"
+            android:hint="Buscar..."
+            android:textColorHint="@color/blue"
+            android:textColor="@color/black"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:minHeight="48dp"
+            android:padding="10dp"
+            android:drawableEnd="@drawable/search_24px"
+            android:drawableTint="@color/blue"
+            />
+
+        <ImageButton
+            android:id="@+id/btnFilter"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/tune_24px"
+            app:tint="@color/blue"
+            android:background="@android:color/transparent"
+android:contentDescription="TODO"
+            />
+
+    </LinearLayout>
 </RelativeLayout>

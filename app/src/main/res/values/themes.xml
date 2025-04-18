@@ -6,4 +6,11 @@
     </style>
 
     <style name="Theme.Taller365" parent="Base.Theme.Taller365" />
+
+    <!-- NoActionBar Style. -->
+    <style name="NoToolBar" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorPrimary">@color/lightBlue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/ultraLightBlue</item>
+    </style>
 </resources>
