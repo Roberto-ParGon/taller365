@@ -4,4 +4,5 @@
     <string name="hintLoginCode">Código del taller</string>
     <string name="btnLogin">Ingresar</string>
     <string name="btnSign">Crear taller</string>
+
 </resources>
