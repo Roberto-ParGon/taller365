@@ -34,7 +34,9 @@ class VehiclesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_vehicles, container, false)
+        val view = inflater.inflate(R.layout.fragment_vehicles, container, false)
+        view.setBackgroundColor(resources.getColor(R.color.blue, null))
+        return view
     }
 
     companion object {

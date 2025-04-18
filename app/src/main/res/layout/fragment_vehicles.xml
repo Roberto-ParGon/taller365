@@ -1,14 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".VehiclesFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="Vehículos" />
+ <LinearLayout
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+     android:orientation="horizontal"
+     android:padding="16dp">
 
-</FrameLayout>
+     <Button
+         android:id="@+id/btnExit"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Salir" />
+
+     <TextView
+         android:id="@+id/tallerCode"
+         android:layout_width="0dp"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:gravity="center"
+         android:text="ABC123" />
+
+     <Button
+         android:id="@+id/btnSettings"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
+         android:text="Ajustes" />
+
+ </LinearLayout>
+
+
+</RelativeLayout>

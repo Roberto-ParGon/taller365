@@ -16,7 +16,7 @@
         android:gravity="center"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:src="@drawable/ic_launcher_background"
+        android:src="@drawable/iconapp"
         />
 
     <TextView
@@ -35,22 +35,23 @@
 
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="303dp"
-        android:layout_height="51dp"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="40dp"
         android:ems="10"
         android:inputType="text"
         android:hint="@string/hintLoginCode"
         android:textColorHint="@color/gray"
+        android:textColor="@color/black"
         android:background="@drawable/rounded_corner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
         android:id="@+id/buttonLogin"
-        android:layout_width="304dp"
-        android:layout_height="53dp"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="@color/blue"
@@ -62,8 +63,8 @@
 
     <Button
         android:id="@+id/buttonSign"
-        android:layout_width="304dp"
-        android:layout_height="53dp"
+        android:layout_width="300dp"
+        android:layout_height="52dp"
         android:layout_marginStart="52dp"
         android:layout_marginTop="24dp"
         android:backgroundTint="@color/ultraLightBlue"

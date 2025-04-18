@@ -33,8 +33,9 @@ class RepairFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_repair, container, false)
+        val view = inflater.inflate(R.layout.fragment_repair, container, false)
+        view.setBackgroundColor(resources.getColor(R.color.lightBlue, null))
+        return view
     }
 
     companion object {

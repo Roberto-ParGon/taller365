@@ -6,10 +6,10 @@
         android:title="Vehículos"  />
     <item
         android:id="@+id/repaisNav"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/build_24px"
         android:title="Refacciones" />
     <item
         android:id="@+id/clientsNav"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/groups_24px"
         android:title="Clientes" />
 </menu>

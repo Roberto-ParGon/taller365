@@ -34,7 +34,9 @@ class ClientsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_clients, container, false)
+        val view = inflater.inflate(R.layout.fragment_clients, container, false)
+        view.setBackgroundColor(resources.getColor(R.color.ultraLightBlue, null))
+        return view
     }
 
     companion object {
