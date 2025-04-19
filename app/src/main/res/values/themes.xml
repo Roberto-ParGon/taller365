@@ -13,4 +13,10 @@
         <item name="colorPrimaryDark">@color/blue</item>
         <item name="colorAccent">@color/ultraLightBlue</item>
     </style>
+    <!-- FAB. -->
+    <style name="ShapeAppearanceOverlay.FAB.Circle" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+
 </resources>
