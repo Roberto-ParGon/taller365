@@ -7,4 +7,6 @@
     <color name="lightBlue">#91bbd1</color>
     <color name="ultraLightBlue">#dce9ef</color>
     <color name="green">#81C784</color>
+    <color name="card_background">#F4F4F4</color>
+
 </resources>
