@@ -4,5 +4,6 @@
     <string name="hintLoginCode">Código del taller</string>
     <string name="btnLogin">Ingresar</string>
     <string name="btnSign">Crear taller</string>
+    <string name="repair_interface">Refacciones</string>
 
 </resources>
