@@ -61,9 +61,11 @@ class RepairFragment : Fragment() {
                 openEditRepairActivity(item)
             }
 
+            // Configurar los listeners de los botones de eliminar refaccion
             holder.ivDelete.setOnClickListener {
-                Toast.makeText(context, "Eliminar ${item.title}", Toast.LENGTH_SHORT).show()
+                showDeleteConfirmationDialog(item)
             }
+
         }
 
         override fun getItemCount() = items.size
@@ -144,5 +146,30 @@ class RepairFragment : Fragment() {
         startActivity(intent)
     }
 
+    private fun showDeleteConfirmationDialog(item: RepairItem) {
+        val dialogBuilder = android.app.AlertDialog.Builder(requireContext())
+        dialogBuilder.setTitle("Confirmar eliminación de refacción")
+        dialogBuilder.setMessage("¿Estás seguro que deseas eliminar la refacción '${item.title}'?")
+
+        // Botón "Cancelar"
+        dialogBuilder.setNegativeButton("Cancelar") { dialog, _ ->
+            dialog.dismiss()
+        }
+
+        // Botón "Eliminar"
+        dialogBuilder.setPositiveButton("Eliminar") { dialog, _ ->
+            deleteRepair(item)  // Llamamos a la función de eliminar
+            dialog.dismiss()
+        }
+
+        val alertDialog = dialogBuilder.create()
+        alertDialog.show()
+    }
+
+    private fun deleteRepair(item: RepairItem) {
+        // Aquí puedes implementar la lógica para eliminar el ítem, ya sea de una lista, base de datos, etc.
+        // Por ahora solo mostramos un mensaje de confirmación.
+        Toast.makeText(context, "Refacción '${item.title}' eliminada", Toast.LENGTH_SHORT).show()
+    }
 
 }
