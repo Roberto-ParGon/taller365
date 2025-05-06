@@ -1,6 +1,7 @@
 package com.uv.taller365
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -135,8 +136,10 @@ class VehicleForm : AppCompatActivity() {
     }
 
     private fun saveNewVehicle() {
-        Toast.makeText(this, "Vehículo registrado exitosamente", Toast.LENGTH_SHORT).show()
-        finish()
+        //Toast.makeText(this, "Vehículo registrado exitosamente", Toast.LENGTH_SHORT).show()
+        //finish()
+        val intent = Intent(this, RepairParts::class.java)
+        startActivity(intent)
     }
 
     private fun updateVehicle() {
