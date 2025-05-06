@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical"
-    android:background="@color/white">
+    tools:context=".CreateWorkshop">
 
+    <!-- AppBar con Toolbar -->
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -22,7 +23,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 
@@ -35,24 +36,21 @@
                     android:src="@drawable/outline_arrow_back_24"
                     app:tint="@color/white" />
 
-
                 <TextView
-                    android:id="@+id/tvFormTittle"
+                    android:id="@+id/tvTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="60dp"
-                    android:text="Registro de vehículo"
+                    android:text="Crear taller"
                     android:textColor="@color/white"
-                    android:textSize="18sp" />
-
-
-
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
+    <!-- Contenido desplazable -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,153 +61,148 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+            <!-- Campo: Nombre del taller -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Marca del Auto"
+                android:layout_marginBottom="8dp"
+                android:text="Nombre del taller"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginBottom="8dp"/>
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                >
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etBrand"
+                    android:id="@+id/etWorkshopName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Marca"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
+                    android:hint="Ingrese el nombre del taller"
+                    android:textColorHint="@color/gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etModel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Modelo"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etSerialNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Número de serie"
-                    android:inputType="textCapCharacters"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etArrivalDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Fecha de llegada (DD/MM/AAAA)"
-                    android:focusable="false"
-                    android:clickable="false"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
-            </com.google.android.material.textfield.TextInputLayout>
-
+            <!-- Campo: Dirección -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Datos del Cliente"
+                android:layout_marginBottom="8dp"
+                android:text="Dirección del taller"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"/>
+                android:textStyle="bold" />
 
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etClientName"
+                    android:id="@+id/etWorkshopAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Nombre de cliente"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
+                    android:hint="Ingrese la dirección del taller"
+                    android:textColorHint="@color/gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Campo: Teléfono -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Teléfono del encargado"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:hintEnabled="false"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue">
+                android:layout_marginBottom="16dp">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etCellPhone"
+                    android:id="@+id/etPhone"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Número de celular"
+                    android:hint="Ingrese el teléfono del taller"
                     android:inputType="phone"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/gray"/>
+                    android:textColorHint="@color/gray" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Campo: Correo electrónico -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="Correo electrónico del encargado"
+                android:textColor="@color/black"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Ingrese el correo del taller"
+                    android:inputType="textEmailAddress"
+                    android:textColorHint="@color/gray" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!-- Botón -->
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btnNext"
+                android:id="@+id/btnCreateWorkshop"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:text="Siguiente"
-                android:textAllCaps="false"
-                android:textSize="16sp"
-                app:icon="@drawable/arrow_forward_24px"
-                app:iconGravity="textEnd"
-                app:iconTint="@color/white"
                 android:backgroundTint="@color/blue"
+                android:text="Crear Taller"
+                android:textAllCaps="false"
                 android:textColor="@color/white"
-                app:cornerRadius="8dp"/>
+                android:textSize="16sp"
+                app:cornerRadius="8dp"
+                app:elevation="2dp" />
+            <!-- Mensaje informativo -->
+            <LinearLayout
+                android:id="@+id/infoMessageLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="24dp"
+                android:padding="8dp"
+                android:gravity="top|start">
 
+                <ImageView
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginEnd="8dp"
+                    android:contentDescription="Icono de ayuda"
+                    android:src="@drawable/help_24px"
+                    app:tint="@color/blue" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Considera que el correo electrónico ingresado será usado para enviar el código del taller."
+                        android:textColor="@color/black"
+                        android:textSize="14sp" />
+                </LinearLayout>
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
