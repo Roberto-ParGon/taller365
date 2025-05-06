@@ -13,15 +13,6 @@
         android:theme="@style/Theme.Taller365"
         tools:targetApi="31">
         <activity
-            android:name=".RepairConfirmation"
-            android:exported="false" />
-        <activity
-            android:name=".RepairParts"
-            android:exported="false" />
-        <activity
-            android:name=".RepairForm"
-            android:exported="false" />
-        <activity
             android:name=".VehicleForm"
             android:exported="false" />
         <activity
