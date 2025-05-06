@@ -26,3 +26,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 }
+
+/*
+Activity:
+val dialog = SuccessWorkshopDialog.newInstance("12D1X420")
+dialog.show(supportFragmentManager, "SuccessWorkshopDialog")
+Fragment:
+dialog.show(childFragmentManager, "SuccessWorkshopDialog")
+ */
