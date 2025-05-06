@@ -52,7 +52,7 @@ class ModifyWorkshop : AppCompatActivity() {
 
         // Acción del botón volver
         btnBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
+            val intent = Intent(this, VehiclesFragment::class.java)
             startActivity(intent)
             finish() // Opcional: cierra esta pantalla
         }
