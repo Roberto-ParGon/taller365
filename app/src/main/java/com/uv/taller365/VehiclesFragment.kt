@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -51,6 +52,7 @@ class VehiclesFragment : Fragment() {
             return VehicleViewHolder(view)
         }
 
+
         override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
             val vehicle = vehicles[position]
 
@@ -76,6 +78,11 @@ class VehiclesFragment : Fragment() {
     ): View {
         val view = inflater.inflate(R.layout.fragment_vehicles, container, false)
         view.setBackgroundColor(resources.getColor(R.color.white, null))
+
+        view.findViewById<ImageButton>(R.id.btnLogout)?.setOnClickListener {
+            activity?.finish()
+        }
+
 
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         val vehicles = listOf(
@@ -168,4 +175,7 @@ class VehiclesFragment : Fragment() {
             Toast.makeText(context, "Error al abrir el formulario: ${e.message}", Toast.LENGTH_SHORT).show()
         }
     }
+
+
+
 }
