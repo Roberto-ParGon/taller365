@@ -62,7 +62,6 @@ class VehicleForm : AppCompatActivity() {
             binding.etArrivalDate.setText(intent.getStringExtra("arrival_date"))
             binding.etClientName.setText(intent.getStringExtra("client_name"))
             binding.etClientPhone.setText(intent.getStringExtra("client_phone"))
-
             binding.btnNext.text = "Actualizar"
             binding.btnNext.setIconResource(R.drawable.save_24px)
 
@@ -138,8 +137,8 @@ class VehicleForm : AppCompatActivity() {
     private fun saveNewVehicle() {
         //Toast.makeText(this, "Vehículo registrado exitosamente", Toast.LENGTH_SHORT).show()
         //finish()
-        val intent = Intent(this, RepairParts::class.java)
-        startActivity(intent)
+        val intentRepair = Intent(this, RepairParts::class.java)
+        startActivity(intentRepair)
     }
 
     private fun updateVehicle() {

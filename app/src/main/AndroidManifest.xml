@@ -19,6 +19,15 @@
             android:name=".MainActivity"
             android:exported="false" />
         <activity
+            android:name=".CreateWorkshop"
+            android:exported="false" />
+        <activity
+            android:name=".ModifyWorkshop"
+            android:exported="false" />
+        <activity
+            android:name=".RepairForm"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>

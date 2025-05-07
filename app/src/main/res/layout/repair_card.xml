@@ -70,7 +70,7 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tvStatusClient"
+                android:id="@+id/tvInventory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="En inventario: 03"
