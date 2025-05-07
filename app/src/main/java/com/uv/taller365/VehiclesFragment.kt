@@ -47,6 +47,7 @@ class VehiclesFragment : Fragment() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VehicleViewHolder {
+
             val view = LayoutInflater.from(parent.context)
                 .inflate(R.layout.vehicle_card, parent, false)
             return VehicleViewHolder(view)

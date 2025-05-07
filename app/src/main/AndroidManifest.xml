@@ -14,18 +14,29 @@
         tools:targetApi="31">
         <activity
             android:name=".VehicleForm"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".MainActivity"
             android:exported="false" />
         <activity
             android:name=".CreateWorkshop"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            />
         <activity
             android:name=".ModifyWorkshop"
             android:exported="false" />
         <activity
             android:name=".RepairForm"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            />
+        <activity
+            android:name=".RepairParts"
+            android:exported="false" />
+        <activity
+            android:name=".RepairConfirmation"
             android:exported="false" />
         <activity
             android:name=".LoginActivity"

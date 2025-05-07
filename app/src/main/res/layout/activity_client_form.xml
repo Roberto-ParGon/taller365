@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
     xmlns:tools="http://schemas.android.com/tools"
 
 
@@ -183,7 +184,8 @@
                     android:inputType="phone"
                     android:textColor="@color/black"
                     android:textColorHint="@color/black"
-                    android:textSize="18sp" />
+                    android:textSize="18sp"
+                    tools:ignore="TouchTargetSizeCheck" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <TextView
