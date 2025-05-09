@@ -93,7 +93,7 @@
                         android:src="@drawable/ic_upload_24px" /> <!-- Icono para subir imagen o editar -->
                 </FrameLayout>
 
-        <!-- Spinner: Tipo -->
+                <!-- Spinner: Tipo -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
