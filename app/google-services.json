@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "559312687686",
+    "project_id": "taller365-54dfb",
+    "storage_bucket": "taller365-54dfb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559312687686:android:f402bbe542016f0d15b047",
+        "android_client_info": {
+          "package_name": "com.uv.taller365"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOed8BfRJIYhr-U2VOcpLiARB3mUXDKks"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
