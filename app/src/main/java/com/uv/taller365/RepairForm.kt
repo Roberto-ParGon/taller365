@@ -82,7 +82,7 @@ class RepairForm : AppCompatActivity() {
             pickImageLauncher.launch("image/*")
         }
         setContentView(binding.root)
-        // Inicializar Firebase
+        // Inicializar Firebase //
         database = FirebaseConnection()
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
