@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_corner_radius">16dp</dimen>
+    <dimen name="image_upload_default_height">100dp</dimen>
+    <dimen name="image_upload_expanded_height">180dp</dimen>
+</resources>

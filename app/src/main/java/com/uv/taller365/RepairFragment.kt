@@ -25,7 +25,7 @@ class RepairFragment : Fragment() {
         val brand: String,
         val model: String,
         val inventory: String,
-        val tipo: String = "Repuesto" // puedes ajustar si quieres cargar el tipo real
+        val tipo: String = "Repuesto"
     )
 
     private inner class RepairAdapter(private val items: List<RepairItem>) :

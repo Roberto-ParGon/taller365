@@ -10,14 +10,80 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uv.taller365.databinding.ActivityRepairFormBinding
+import android.net.Uri
+import androidx.activity.result.contract.ActivityResultContracts
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import android.view.View
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.MultiTransformation
+import android.content.Context
+import android.graphics.Bitmap
+import android.provider.MediaStore
+import java.io.File
+import java.io.FileOutputStream
+
+fun saveImageToInternalStorage(context: Context, imageUri: Uri): String? {
+    return try {
+        val bitmap = MediaStore.Images.Media.getBitmap(context.contentResolver, imageUri)
+        val filename = "repair_${System.currentTimeMillis()}.jpg"
+        val file = File(context.filesDir, filename)
+        val fos = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos)
+        fos.close()
+        file.absolutePath // ruta absoluta del archivo guardado
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+}
 
 class RepairForm : AppCompatActivity() {
+
+    private lateinit var database: FirebaseConnection
+    private var selectedImageUri: Uri? = null
     private lateinit var binding: ActivityRepairFormBinding
+
+    private val pickImageLauncher = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        if (uri != null) {
+            selectedImageUri = uri
+            binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
+            binding.imageContainerImage.visibility = View.VISIBLE
+
+            val radiusInPixels = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+
+            Glide.with(this)
+                .load(uri)
+                .apply(RequestOptions.bitmapTransform(
+                    MultiTransformation(
+                        CenterCrop(),
+                        RoundedCorners(radiusInPixels)
+                    )
+                ))
+                .placeholder(R.drawable.ic_upload_24px)
+                .error(R.drawable.ic_upload_24px)
+                .into(binding.imageContainerImage)
+
+            binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+            binding.imageUploadContainer.requestLayout()
+
+            binding.imageUploadContainer.alpha = 0.7f
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityRepairFormBinding.inflate(layoutInflater)
+        binding.imageUploadContainer.setOnClickListener {
+            pickImageLauncher.launch("image/*")
+        }
         setContentView(binding.root)
+        // Inicializar Firebase
+        database = FirebaseConnection()
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -39,6 +105,8 @@ class RepairForm : AppCompatActivity() {
         setupForm()
         setupButton()
     }
+
+    /* Metodo para configurar la toolbar */
     private fun setupToolbar() {
         val isEditMode = intent.getBooleanExtra("is_edit_mode", false)
 
@@ -50,6 +118,7 @@ class RepairForm : AppCompatActivity() {
         }
     }
 
+    /* Metodo para configurar el spinner */
     private fun setupSpinner() {
         val tipos = listOf("Repuesto", "Accesorio", "Herramienta", "Otro")
         val adapter = ArrayAdapter(
@@ -69,30 +138,69 @@ class RepairForm : AppCompatActivity() {
             binding.editModelo.setText(intent.getStringExtra("modelo"))
             binding.editCantidad.setText(intent.getStringExtra("cantidad"))
 
-            // Reemplazar el fondo del contenedor por la imagen del item
-            val imageRes = intent.getIntExtra("image_res", R.drawable.ic_upload_24px)  // Agrega una imagen predeterminada si no existe
-            binding.imageUploadContainer.setBackgroundResource(imageRes)
+            // Obtener URI o recurso de imagen a cargar en edición
+            val imageUriString = intent.getStringExtra("image_uri") // si tienes URI en String
+            val imageRes = intent.getIntExtra("image_res", 0) // recurso alternativo
 
-            // Asegúrate de aplicar el filtro de sombra (darkened effect)
-            binding.imageUploadContainer.alpha = 0.5f  // Ajusta el nivel de sombra
+            if (!imageUriString.isNullOrBlank()) {
+                // Mostrar imagen desde URI con Glide, igual que en la carga de imagen
+                val radiusInPixels = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+                binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
+                binding.imageContainerImage.visibility = View.VISIBLE
 
-            // Cambiar el icono para edición si es modo edición
-            binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
+                Glide.with(this)
+                    .load(Uri.parse(imageUriString))
+                    .apply(RequestOptions.bitmapTransform(
+                        MultiTransformation(
+                            CenterCrop(),
+                            RoundedCorners(radiusInPixels)
+                        )
+                    ))
+                    .placeholder(R.drawable.ic_upload_24px)
+                    .error(R.drawable.ic_upload_24px)
+                    .into(binding.imageContainerImage)
+
+                binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+                binding.imageUploadContainer.requestLayout()
+                binding.imageUploadContainer.alpha = 0.7f
+
+            } else if (imageRes != 0) {
+                // Cargar imagen desde recurso, sin Glide, solo para respaldo
+                binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
+                binding.imageContainerImage.visibility = View.VISIBLE
+                binding.imageContainerImage.setImageResource(imageRes)
+                binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+                binding.imageUploadContainer.requestLayout()
+                binding.imageUploadContainer.alpha = 0.7f
+
+            } else {
+                // No imagen, mostrar placeholder original
+                binding.placeholderImage.setImageResource(R.drawable.ic_upload_24px)
+                binding.imageContainerImage.visibility = View.GONE
+                binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
+                binding.imageUploadContainer.requestLayout()
+                binding.imageUploadContainer.alpha = 1f
+            }
 
             binding.btnGuardar.text = "Actualizar"
             binding.btnGuardar.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.save_24px, 0)
         } else {
-            // Mantener el icono original cuando no es modo edición
+            // Formulario nuevo sin imagen
             binding.placeholderImage.setImageResource(R.drawable.ic_upload_24px)
+            binding.imageContainerImage.visibility = View.GONE
+            binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
+            binding.imageUploadContainer.requestLayout()
+            binding.imageUploadContainer.alpha = 1f
         }
     }
 
-
+    /* Metodo para obtener el indice del tipo en el spinner */
     private fun getTipoIndex(tipo: String): Int {
         val tipos = listOf("Repuesto", "Accesorio", "Herramienta", "Otro")
         return tipos.indexOfFirst { it.equals(tipo, ignoreCase = true) }.takeIf { it >= 0 } ?: 0
     }
 
+    /* Metodo para validar el formulario */
     private fun validateForm(): Boolean {
         var isValid = true
 
@@ -119,16 +227,36 @@ class RepairForm : AppCompatActivity() {
         return isValid
     }
 
+    /* Metodo para ingresar una herramienta */
     private fun saveNewRepair() {
-        Toast.makeText(this, "Refacción registrada exitosamente", Toast.LENGTH_SHORT).show()
-        finish()
+        val imagePath = selectedImageUri?.let { uri ->
+            saveImageToInternalStorage(this, uri)
+        }
+
+        database.writeNewRepair(
+            binding.spinnerTipo.selectedItem.toString(),
+            binding.editNombre.text.toString(),
+            binding.editMarca.text.toString(),
+            binding.editModelo.text.toString(),
+            binding.editCantidad.text.toString(),
+            imagePath
+        ) { success ->
+            if (success) {
+                Toast.makeText(this, "Refacción guardada exitosamente", Toast.LENGTH_SHORT).show()
+                finish()
+            } else {
+                Toast.makeText(this, "Error al guardar la refacción", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
+    /* Metodo para actualizar informacion de una herramienta */
     private fun updateRepair() {
         Toast.makeText(this, "Refacción actualizada exitosamente", Toast.LENGTH_SHORT).show()
         finish()
     }
 
+    /* Metodo para configurar el boton de guardar */
     private fun setupButton() {
         binding.btnGuardar.setOnClickListener {
             if (validateForm()) {
