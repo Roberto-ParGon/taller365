@@ -29,4 +29,20 @@ class FirebaseConnection {
             .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { onComplete(false) }
     }
+
+    /* Metodo para obtener todas las refacciones */
+    fun fetchRepairs(onResult: (List<Repair>) -> Unit, onError: (Exception) -> Unit) {
+        val db = FirebaseDatabase.getInstance().getReference("repairs")
+        db.get().addOnSuccessListener { snapshot ->
+            val repairs = mutableListOf<Repair>()
+            for (child in snapshot.children) {
+                val repair = child.getValue(Repair::class.java)
+                repair?.let { repairs.add(it) }
+            }
+            onResult(repairs)
+        }.addOnFailureListener { exception ->
+            onError(exception)
+        }
+    }
+
 }

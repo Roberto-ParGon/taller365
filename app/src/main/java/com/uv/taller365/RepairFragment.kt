@@ -13,22 +13,16 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import java.io.File
 import java.util.UUID
 
 class RepairFragment : Fragment() {
 
-    data class RepairItem(
-        val id: String = java.util.UUID.randomUUID().toString(),
-        val imageRes: Int,
-        val title: String,
-        val brand: String,
-        val model: String,
-        val inventory: String,
-        val tipo: String = "Repuesto"
-    )
+    private val repairsList = mutableListOf<Repair>()
 
-    private inner class RepairAdapter(private val items: List<RepairItem>) :
+    private inner class RepairAdapter(private val items: List<Repair>) :
         RecyclerView.Adapter<RepairAdapter.RepairViewHolder>() {
 
         inner class RepairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -50,22 +44,29 @@ class RepairFragment : Fragment() {
         override fun onBindViewHolder(holder: RepairViewHolder, position: Int) {
             val item = items[position]
 
-            holder.imgProduct.setImageResource(item.imageRes)
-            holder.tvTitle.text = item.title
-            holder.tvBrand.text = "Marca: ${item.brand}"
-            holder.tvModel.text = "Modelo: ${item.model}"
-            holder.tvInventory.text = "En inventario: ${item.inventory}"
+            if (!item.imagePath.isNullOrEmpty()) {
+                Glide.with(holder.itemView.context)
+                    .load(File(item.imagePath))
+                    .placeholder(R.drawable.ic_upload_24px)
+                    .error(R.drawable.ic_upload_24px)
+                    .circleCrop()
+                    .into(holder.imgProduct)
+            } else {
+                holder.imgProduct.setImageResource(R.drawable.ic_upload_24px)
+            }
 
-            // Configurar los listeners de los botones de editar refaccion
+            holder.tvTitle.text = item.title ?: ""
+            holder.tvBrand.text = "Marca: ${item.brand ?: ""}"
+            holder.tvModel.text = "Modelo: ${item.model ?: ""}"
+            holder.tvInventory.text = "En inventario: ${item.inventory ?: ""}"
+
             holder.ivEdit.setOnClickListener {
                 openEditRepairActivity(item)
             }
 
-            // Configurar los listeners de los botones de eliminar refaccion
             holder.ivDelete.setOnClickListener {
                 showDeleteConfirmationDialog(item)
             }
-
         }
 
         override fun getItemCount() = items.size
@@ -78,40 +79,27 @@ class RepairFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_repair, container, false)
         view.setBackgroundColor(resources.getColor(R.color.lightBlue, null))
 
-        val repairItems = listOf(
-            RepairItem(
-                id = UUID.randomUUID().toString(), // Agregar un id único
-                imageRes = R.drawable.freno,
-                title = "Disco Rotor Delantero Freno",
-                brand = "Fritec",
-                model = "FR08104",
-                inventory = "03"
-            ),
-            RepairItem(
-                id = UUID.randomUUID().toString(), // Agregar un id único
-                imageRes = R.drawable.balatas,
-                title = "Balatas Traseras",
-                brand = "Brembo",
-                model = "BT1290",
-                inventory = "05"
-            ),
-            RepairItem(
-                id = UUID.randomUUID().toString(), // Agregar un id único
-                imageRes = R.drawable.aceite,
-                title = "Aceite Motor Sintético",
-                brand = "Mobil",
-                model = "MX750",
-                inventory = "12"
-            )
-        )
-
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerViewRepairs)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = RepairAdapter(repairItems)
         recyclerView.isNestedScrollingEnabled = true
         recyclerView.addItemDecoration(
             DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
                 setDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.list_divider)!!)
+            }
+        )
+
+        val adapter = RepairAdapter(repairsList)
+        recyclerView.adapter = adapter
+
+        val firebaseConnection = FirebaseConnection()
+        firebaseConnection.fetchRepairs(
+            onResult = { repairs ->
+                repairsList.clear()
+                repairsList.addAll(repairs)
+                adapter.notifyDataSetChanged()
+            },
+            onError = { exception ->
+                Toast.makeText(context, "Error al cargar refacciones: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
         )
 
@@ -133,20 +121,20 @@ class RepairFragment : Fragment() {
         }
     }
 
-    private fun openEditRepairActivity(item: RepairItem) {
+    private fun openEditRepairActivity(item: Repair ) {
         val intent = Intent(requireActivity(), RepairForm::class.java).apply {
             putExtra("is_edit_mode", true)
             putExtra("nombre", item.title)
             putExtra("marca", item.brand)
             putExtra("modelo", item.model)
             putExtra("cantidad", item.inventory)
-            putExtra("tipo", item.tipo)
-            putExtra("image_res", item.imageRes)  // Pasamos la imagen aquí
+            putExtra("tipo", item.repairType)
+            putExtra("image_uri", item.imagePath)
         }
         startActivity(intent)
     }
 
-    private fun showDeleteConfirmationDialog(item: RepairItem) {
+    private fun showDeleteConfirmationDialog(item: Repair ) {
         val dialogBuilder = android.app.AlertDialog.Builder(requireContext())
         dialogBuilder.setTitle("Confirmar eliminación de refacción")
         dialogBuilder.setMessage("¿Estás seguro que deseas eliminar la refacción '${item.title}'?")
@@ -166,7 +154,7 @@ class RepairFragment : Fragment() {
         alertDialog.show()
     }
 
-    private fun deleteRepair(item: RepairItem) {
+    private fun deleteRepair(item: Repair ) {
         // Aquí puedes implementar la lógica para eliminar el ítem, ya sea de una lista, base de datos, etc.
         // Por ahora solo mostramos un mensaje de confirmación.
         Toast.makeText(context, "Refacción '${item.title}' eliminada", Toast.LENGTH_SHORT).show()

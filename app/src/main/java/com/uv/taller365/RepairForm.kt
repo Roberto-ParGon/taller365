@@ -149,7 +149,7 @@ class RepairForm : AppCompatActivity() {
                 binding.imageContainerImage.visibility = View.VISIBLE
 
                 Glide.with(this)
-                    .load(Uri.parse(imageUriString))
+                    .load(File(imageUriString))
                     .apply(RequestOptions.bitmapTransform(
                         MultiTransformation(
                             CenterCrop(),
@@ -202,29 +202,53 @@ class RepairForm : AppCompatActivity() {
 
     /* Metodo para validar el formulario */
     private fun validateForm(): Boolean {
-        var isValid = true
-
-        if (binding.editNombre.text.isNullOrBlank()) {
+        // Validar Nombre
+        val nombre = binding.editNombre.text.toString().trim()
+        if (nombre.isEmpty()) {
             binding.editNombre.error = "Ingrese el nombre"
-            isValid = false
+            binding.editNombre.requestFocus()
+            return false
+        } else {
+            binding.editNombre.error = null
         }
 
-        if (binding.editMarca.text.isNullOrBlank()) {
+        // Validar Marca
+        val marca = binding.editMarca.text.toString().trim()
+        if (marca.isEmpty()) {
             binding.editMarca.error = "Ingrese la marca"
-            isValid = false
+            binding.editMarca.requestFocus()
+            return false
+        } else {
+            binding.editMarca.error = null
         }
 
-        if (binding.editModelo.text.isNullOrBlank()) {
+        // Validar Modelo
+        val modelo = binding.editModelo.text.toString().trim()
+        if (modelo.isEmpty()) {
             binding.editModelo.error = "Ingrese el modelo"
-            isValid = false
+            binding.editModelo.requestFocus()
+            return false
+        } else {
+            binding.editModelo.error = null
         }
 
-        if (binding.editCantidad.text.isNullOrBlank()) {
+        // Validar Cantidad: no vacía, y número positivo
+        val cantidadStr = binding.editCantidad.text.toString().trim()
+        if (cantidadStr.isEmpty()) {
             binding.editCantidad.error = "Ingrese la cantidad"
-            isValid = false
+            binding.editCantidad.requestFocus()
+            return false
+        }
+        val cantidad = cantidadStr.toIntOrNull()
+        if (cantidad == null || cantidad <= 0) {
+            binding.editCantidad.error = "Ingrese una cantidad válida mayor que cero"
+            binding.editCantidad.requestFocus()
+            return false
+        } else {
+            binding.editCantidad.error = null
         }
 
-        return isValid
+        return true
     }
 
     /* Metodo para ingresar una herramienta */
