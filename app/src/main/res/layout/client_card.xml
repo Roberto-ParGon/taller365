@@ -19,7 +19,7 @@
 
             <!-- Imagen redonda -->
             <ImageView
-                android:id="@+id/imgProduct"
+                android:id="@+id/ivVehicleImage"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_alignParentStart="true"
@@ -38,11 +38,11 @@
                 android:layout_centerVertical="true"
                 android:layout_marginStart="12dp"
                 android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/imgProduct"
+                android:layout_toEndOf="@id/ivVehicleImage"
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/tvTitle"
+                    android:id="@+id/tvVehicleName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Chevy Pop 2002"
@@ -65,7 +65,7 @@
                         android:textSize="13sp" />
 
                     <TextView
-                        android:id="@+id/tvModel"
+                        android:id="@+id/tvClientName"
                         android:layout_width="229dp"
                         android:layout_height="wrap_content"
                         android:text="Nombre: Abisai Velasco"
@@ -74,7 +74,7 @@
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/tvStatusClient"
+                    android:id="@+id/tvStatus"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
