@@ -58,6 +58,7 @@ class ClientsFragment : Fragment() {
 
                 }
                 context.startActivity(intent)
+            }
         }
 
         override fun getItemCount() = vehicles.size

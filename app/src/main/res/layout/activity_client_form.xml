@@ -82,12 +82,12 @@
                         android:background="@drawable/image_container_background">
 
                         <ImageView
-                            android:id="@+id/ivClientImage"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:scaleType="centerCrop"
+                            android:id="@+id/placeholderImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
                             android:contentDescription="Imagen del cliente o vehículo"
-                            android:src="@drawable/sample_vehicle_image" />
+                            android:src="@drawable/ic_upload_24px" />
                     </FrameLayout>
 
                     <!-- Marca -->
