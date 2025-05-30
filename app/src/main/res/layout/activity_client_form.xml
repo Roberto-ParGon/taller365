@@ -3,11 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     xmlns:tools="http://schemas.android.com/tools"
-
-
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -36,7 +34,6 @@
                     android:src="@drawable/outline_arrow_back_24"
                     app:tint="@color/white" />
 
-
                 <TextView
                     android:id="@+id/tvFormTittle"
                     android:layout_width="wrap_content"
@@ -45,8 +42,6 @@
                     android:text="Información Cliente"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
-
-
             </LinearLayout>
 
         </androidx.appcompat.widget.Toolbar>
@@ -63,159 +58,144 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <TextView
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mainContainer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Marca del Auto"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:cardCornerRadius="12dp"
+                android:layout_margin="12dp"
+                app:cardCornerRadius="10dp"
                 app:cardElevation="6dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    app:boxStrokeColor="@color/blue"
-                    app:cursorColor="@color/blue"
-                    app:hintEnabled="false">
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <!-- Imagen estática (solo visual) -->
+                    <FrameLayout
+                        android:id="@+id/imageContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/image_container_background">
+
+                        <ImageView
+                            android:id="@+id/placeholderImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:contentDescription="Imagen del cliente o vehículo"
+                            android:src="@drawable/ic_upload_24px" />
+                    </FrameLayout>
+
+                    <!-- Marca -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Marca del Auto"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
 
                     <TextView
                         android:id="@+id/etBrand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Chevrolet"
+                        android:text="Chevrolet"
                         android:textColor="@color/black"
-                        android:textColorHint="@color/black"
-                        android:textSize="18sp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textSize="16sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Modelo -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Modelo"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/etModel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Chevy Pop 2002"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Fecha de llegada -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Fecha de llegada"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/etArrivalDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="20/04/2025"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Datos del cliente -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Datos del Cliente"
+                        android:textColor="@color/black"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="8dp" />
+
+                    <TextView
+                        android:id="@+id/etClientName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Abisai Velasco"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="12dp" />
+
+                    <TextView
+                        android:id="@+id/etCellPhone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="2288334455"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="20dp" />
+
+                    <!-- Seguimiento -->
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Seguimiento"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginBottom="4dp" />
+
+                    <TextView
+                        android:id="@+id/textView3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="En taller"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:layout_marginBottom="8dp" />
+
+                </LinearLayout>
             </androidx.cardview.widget.CardView>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                app:hintEnabled="false">
-
-                <TextView
-                    android:id="@+id/etModel"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Chevy Pop 2002"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="18sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                app:hintEnabled="false">
-
-                <TextView
-                    android:id="@+id/etArrivalDate"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:hint="20/04/2025"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="18sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:text="Datos del Cliente"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                app:hintEnabled="false">
-
-                <TextView
-                    android:id="@+id/etClientName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="Abisai Velasco"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="18sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                app:hintEnabled="false">
-
-                <TextView
-                    android:id="@+id/etCellPhone"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="2288334455"
-                    android:inputType="phone"
-                    android:textColor="@color/black"
-                    android:textColorHint="@color/black"
-                    android:textSize="18sp"
-                    tools:ignore="TouchTargetSizeCheck" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:text="Seguimiento"
-                android:textColor="@color/black"
-                android:textSize="21sp"
-                android:textStyle="bold" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginBottom="24dp"
-                app:boxStrokeColor="@color/blue"
-                app:cursorColor="@color/blue"
-                app:hintEnabled="false">
-
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="En taller"
-                    android:textSize="18sp" />
-            </com.google.android.material.textfield.TextInputLayout>
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

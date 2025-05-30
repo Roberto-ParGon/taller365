@@ -11,7 +11,9 @@ class FragmentStateAdapter(fragmentActivity: FragmentActivity) : FragmentStateAd
         return when (position) {
             0 -> VehiclesFragment()
             1 -> RepairFragment()
-            else -> ClientsFragment()
+            2 -> ClientsFragment()
+            else -> throw IllegalStateException("Fragment desconocido para posición $position")
+
         }
     }
 }
