@@ -12,4 +12,8 @@
         android:id="@+id/clientsNav"
         android:icon="@drawable/groups_24px"
         android:title="Clientes" />
+    <item
+        android:id="@+id/configNav"
+        android:icon="@drawable/settings_24px"
+        android:title="Configuracion" />
 </menu>

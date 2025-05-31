@@ -2,14 +2,21 @@ package com.uv.taller365
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
+import android.util.Base64
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.uv.taller365.databinding.ActivityVehicleFormBinding
+import com.uv.taller365.helpers.ImageHelper
+import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,6 +24,9 @@ class VehicleForm : AppCompatActivity() {
 
     private lateinit var binding: ActivityVehicleFormBinding
     private val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    private var selectedImageUri: Uri? = null
+    private var cameraImageUri: Uri? = null
+    private var repairId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +44,20 @@ class VehicleForm : AppCompatActivity() {
         setupForm()
         setupDatePicker()
         setupButton()
+
+        selectedImageUri = savedInstanceState?.getString("selectedImageUri")?.let { Uri.parse(it) }
+        selectedImageUri?.let { uri ->
+            val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+            binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+            binding.imageUploadContainer.requestLayout()
+            ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
+        }
+
+        val imageBase64 = selectedImageUri?.let { ImageHelper.uriToBase64(contentResolver, it) }
+
+        binding.imageUploadContainer.setOnClickListener {
+            showCustomOptionDialog()
+        }
     }
 
     private fun setupToolbar() {
@@ -147,4 +171,78 @@ class VehicleForm : AppCompatActivity() {
         Toast.makeText(this, "Vehículo actualizado exitosamente", Toast.LENGTH_SHORT).show()
         finish()
     }
+
+    private fun handleImageSelected(uri: Uri) {
+        selectedImageUri = uri
+        val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
+
+        ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
+    }
+
+    private fun loadImageFromBase64(base64: String) {
+        val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
+
+        ImageHelper.loadImageFromBase64(this, base64, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
+    }
+
+    private fun loadImageFromResource(resId: Int) {
+        ImageHelper.loadImageFromResource(this, resId, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
+    }
+
+    private fun resetImagePlaceholder() {
+        val defaultHeight = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
+        ImageHelper.resetImage(binding.imageUploadContainer, binding.imageContainerImage, binding.placeholderImage, defaultHeight)
+    }
+
+    fun bitmapToBase64(bitmap: Bitmap): String {
+        val stream = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
+        return android.util.Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
+    }
+
+    fun uriToBase64(uri: Uri): String? = try {
+        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
+        bitmapToBase64(bitmap)
+    } catch (e: Exception) {
+        e.printStackTrace()
+        null
+    }
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { handleImageSelected(it) }
+    }
+
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success && cameraImageUri != null) {
+            handleImageSelected(cameraImageUri!!)
+        }
+    }
+
+    private fun showCustomOptionDialog() {
+        ImageHelper.showImagePickerDialog(
+            activity = this,
+            createUri = { ImageHelper.createImageUri(this) },
+            onCameraSelected = { uri ->
+                cameraImageUri = uri
+                takePictureLauncher.launch(uri)
+            },
+            onGallerySelected = {
+                pickImageLauncher.launch("image/*")
+            }
+        )
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        selectedImageUri?.let {
+            outState.putString("selectedImageUri", it.toString())
+        }
+    }
+
 }

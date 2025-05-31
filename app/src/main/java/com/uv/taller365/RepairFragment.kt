@@ -37,7 +37,7 @@ class RepairFragment : Fragment() {
         setupRecyclerView()
         loadRepairs()
 
-        view.findViewById<FloatingActionButton>(R.id.fab3)?.setOnClickListener {
+        view.findViewById<ImageButton>(R.id.fab3)?.setOnClickListener {
             navigateToRepairRegistration()
         }
 
@@ -154,12 +154,12 @@ class RepairFragment : Fragment() {
                 Glide.with(holder.itemView.context)
                     .load(bitmap)
                     .override(100, 100)
-                    .placeholder(R.drawable.ic_upload_24px)
-                    .error(R.drawable.ic_upload_24px)
+                    .placeholder(R.drawable.noimage)
+                    .error(R.drawable.noimage)
                     .circleCrop()
                     .into(holder.imgProduct)
             } else {
-                holder.imgProduct.setImageResource(R.drawable.ic_upload_24px)
+                holder.imgProduct.setImageResource(R.drawable.noimage)
             }
 
             holder.tvTitle.text = item.title.orEmpty()
@@ -173,4 +173,6 @@ class RepairFragment : Fragment() {
 
         override fun getItemCount() = items.size
     }
+
+
 }

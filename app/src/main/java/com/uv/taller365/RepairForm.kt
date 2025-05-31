@@ -5,19 +5,14 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Base64
-import android.view.View
-import android.view.WindowManager
+import android.view.*
 import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.MultiTransformation
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.uv.taller365.databinding.ActivityRepairFormBinding
+import com.uv.taller365.helpers.ImageHelper
 import java.io.ByteArrayOutputStream
 
 class RepairForm : AppCompatActivity() {
@@ -25,11 +20,8 @@ class RepairForm : AppCompatActivity() {
     private lateinit var binding: ActivityRepairFormBinding
     private lateinit var database: FirebaseConnection
     private var selectedImageUri: Uri? = null
+    private var cameraImageUri: Uri? = null
     private var repairId: String? = null
-
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let { handleImageSelected(it) }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,13 +37,25 @@ class RepairForm : AppCompatActivity() {
         setupForm()
         setupButton()
 
+        selectedImageUri = savedInstanceState?.getString("selectedImageUri")?.let { Uri.parse(it) }
+        selectedImageUri?.let { uri ->
+            val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+            binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+            binding.imageUploadContainer.requestLayout()
+            ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
+        }
+
+        val imageBase64 = selectedImageUri?.let { ImageHelper.uriToBase64(contentResolver, it) }
+
         binding.imageUploadContainer.setOnClickListener {
-            pickImageLauncher.launch("image/*")
+            showCustomOptionDialog()
         }
     }
 
     private fun enableEdgeToEdge() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.Offwhite)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
     }
 
     private fun setupWindowInsets() {
@@ -142,13 +146,25 @@ class RepairForm : AppCompatActivity() {
     }
 
     private fun showLoading(isLoading: Boolean) {
-        binding.btnGuardar.isEnabled = !isLoading
+
+        if (isLoading) {
+            window.setFlags(
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+            )
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
+
         binding.loadingContainer.visibility = if (isLoading) View.VISIBLE else View.GONE
 
-        window.setFlags(
-            if (isLoading) WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE else 0,
-            WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-        )
+        binding.btnGuardar.isEnabled = !isLoading
+
+        window.decorView.systemUiVisibility = if (isLoading) {
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        } else {
+            View.SYSTEM_UI_FLAG_VISIBLE
+        }
     }
 
     override fun onBackPressed() {
@@ -222,66 +238,30 @@ class RepairForm : AppCompatActivity() {
 
     private fun handleImageSelected(uri: Uri) {
         selectedImageUri = uri
-        binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
-        binding.imageContainerImage.visibility = View.VISIBLE
+        val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
 
-        val radiusInPixels = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-
-        Glide.with(this)
-            .load(uri)
-            .apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(), RoundedCorners(radiusInPixels))))
-            .placeholder(R.drawable.ic_upload_24px)
-            .error(R.drawable.ic_upload_24px)
-            .into(binding.imageContainerImage)
-
-        binding.imageUploadContainer.apply {
-            layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
-            requestLayout()
-            alpha = 0.7f
-        }
+        ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
     }
 
-    private fun loadImageFromBase64(base64String: String) {
-        val decodedBytes = Base64.decode(base64String, Base64.DEFAULT)
-        val bitmap = BitmapFactory.decodeByteArray(decodedBytes, 0, decodedBytes.size)
-        val radiusInPixels = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+    private fun loadImageFromBase64(base64: String) {
+        val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
 
-        binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
-        binding.imageContainerImage.visibility = View.VISIBLE
-
-        Glide.with(this)
-            .load(bitmap)
-            .apply(RequestOptions.bitmapTransform(MultiTransformation(CenterCrop(), RoundedCorners(radiusInPixels))))
-            .placeholder(R.drawable.ic_upload_24px)
-            .error(R.drawable.ic_upload_24px)
-            .into(binding.imageContainerImage)
-
-        binding.imageUploadContainer.apply {
-            layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
-            requestLayout()
-            alpha = 0.7f
-        }
+        ImageHelper.loadImageFromBase64(this, base64, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
     }
 
     private fun loadImageFromResource(resId: Int) {
-        binding.placeholderImage.setImageResource(R.drawable.ic_edit_24px)
-        binding.imageContainerImage.visibility = View.VISIBLE
-        binding.imageContainerImage.setImageResource(resId)
-        binding.imageUploadContainer.apply {
-            layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
-            requestLayout()
-            alpha = 0.7f
-        }
+        ImageHelper.loadImageFromResource(this, resId, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer)
+        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+        binding.imageUploadContainer.requestLayout()
     }
 
     private fun resetImagePlaceholder() {
-        binding.placeholderImage.setImageResource(R.drawable.ic_upload_24px)
-        binding.imageContainerImage.visibility = View.GONE
-        binding.imageUploadContainer.apply {
-            layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
-            requestLayout()
-            alpha = 1f
-        }
+        val defaultHeight = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
+        ImageHelper.resetImage(binding.imageUploadContainer, binding.imageContainerImage, binding.placeholderImage, defaultHeight)
     }
 
     fun bitmapToBase64(bitmap: Bitmap): String {
@@ -297,4 +277,38 @@ class RepairForm : AppCompatActivity() {
         e.printStackTrace()
         null
     }
+
+    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
+        uri?.let { handleImageSelected(it) }
+    }
+
+    private val takePictureLauncher = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if (success && cameraImageUri != null) {
+            handleImageSelected(cameraImageUri!!)
+        }
+    }
+
+    private fun showCustomOptionDialog() {
+        ImageHelper.showImagePickerDialog(
+            activity = this,
+            createUri = { ImageHelper.createImageUri(this) },
+            onCameraSelected = { uri ->
+                cameraImageUri = uri
+                takePictureLauncher.launch(uri)
+            },
+            onGallerySelected = {
+                pickImageLauncher.launch("image/*")
+            }
+        )
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        selectedImageUri?.let {
+            outState.putString("selectedImageUri", it.toString())
+        }
+    }
+
+
+
 }

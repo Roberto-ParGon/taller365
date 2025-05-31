@@ -1,5 +1,6 @@
 package com.uv.taller365
 
+import android.view.View
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -19,6 +20,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
+        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
 
         bottomNav = findViewById(R.id.bottomNav)
         viewPager = findViewById(R.id.viewpager)
@@ -31,6 +34,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.vehiclesNav -> viewPager.currentItem = 0
                 R.id.repaisNav -> viewPager.currentItem = 1
                 R.id.clientsNav -> viewPager.currentItem = 2
+                R.id.configNav -> viewPager.currentItem = 3
             }
             true
         }

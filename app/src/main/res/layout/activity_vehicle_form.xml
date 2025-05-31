@@ -84,12 +84,21 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
 
+                    <!-- ImageView para imagen grande que ocupa todo el contenedor -->
+                    <ImageView
+                        android:id="@+id/imageContainerImage"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:contentDescription="Imagen cargada"
+                        android:scaleType="centerCrop"
+                        android:visibility="gone" />
+
                     <ImageView
                         android:id="@+id/placeholderImage"
                         android:layout_width="60dp"
                         android:layout_height="60dp"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_upload_24px" /> <!-- Icono para subir imagen o editar -->
+                        android:src="@drawable/ic_upload_24px" />
                 </FrameLayout>
 
                 <!-- EditText: Marca -->

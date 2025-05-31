@@ -4,7 +4,14 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.Taller365" parent="Base.Theme.Taller365" />
+    <style name="Theme.Taller365" parent="Base.Theme.Taller365">
+        <item name="bottomNavigationStyle">@style/Widget.Taller365.BottomNavigationView</item>
+    </style>
+
+    <style name="Widget.Taller365.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="android:background">@android:color/transparent</item>
+        <item name="rippleColor">@android:color/transparent</item>
+    </style>
 
     <!-- NoActionBar Style. -->
     <style name="NoToolBar" parent="Theme.AppCompat.Light.NoActionBar">

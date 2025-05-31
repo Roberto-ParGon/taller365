@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import java.text.SimpleDateFormat
 import java.util.*
@@ -57,7 +58,12 @@ class VehiclesFragment : Fragment() {
         override fun onBindViewHolder(holder: VehicleViewHolder, position: Int) {
             val vehicle = vehicles[position]
 
-            holder.ivVehicleImage.setImageResource(vehicle.imageRes)
+            Glide.with(holder.itemView.context)
+                .load(vehicle.imageRes)
+                .placeholder(R.drawable.ic_upload_24px)
+                .error(R.drawable.ic_upload_24px)
+                .circleCrop()
+                .into(holder.ivVehicleImage)
             holder.tvVehicleName.text = vehicle.name
             holder.tvBrand.text = "Marca: ${vehicle.brand}"
             holder.tvSerialNumber.text = "No. Serie: ${vehicle.serialNumber}"
@@ -109,7 +115,7 @@ class VehiclesFragment : Fragment() {
                 clientName = "Pepito",
                 clientPhone = "2288019209",
                 status = "En taller",
-                statusColor = R.color.ultraLightBlue
+                statusColor = R.color.orange
             ),
             Vehicle(
                 imageRes = R.drawable.ford_ka,

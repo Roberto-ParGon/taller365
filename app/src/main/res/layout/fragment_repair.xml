@@ -7,65 +7,75 @@
     android:layout_height="match_parent"
     tools:context=".RepairFragment" >
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:theme="@style/NoToolBar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
-            android:theme="@style/NoToolBar">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="-20dp"
+            android:weightSum="3">
 
+            <!-- Botón izquierda -->
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="Salir"
+                android:cropToPadding="false"
+                android:src="@drawable/logout_24px"
+                app:tint="@color/white" />
+
+            <!-- Título centrado -->
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
 
-                <ImageButton
-                    android:id="@+id/btnLogout"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Salir"
-                    android:cropToPadding="false"
-                    android:src="@drawable/logout_24px"
-                    app:tint="@color/white" />
-
-                <LinearLayout
-                    android:layout_width="0dp"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:fontFamily="@font/inter_semibold"
                     android:gravity="center"
-                    android:orientation="vertical"
-                    android:paddingRight="50dp">
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/inter_semibold"
-                        android:gravity="center"
-                        android:text="@string/repair_interface"
-                        android:textColor="@color/white"
-                        android:textSize="20sp" />
-
-                </LinearLayout>
+                    android:text="@string/repair_interface"
+                    android:textColor="@color/white"
+                    android:textSize="20sp" />
 
             </LinearLayout>
 
-        </androidx.appcompat.widget.Toolbar>
+            <!-- Botón derecha -->
+            <ImageButton
+                android:id="@+id/fab3"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:contentDescription="Añadir refaccion"
+                android:cropToPadding="false"
+                android:src="@drawable/add_repair_24px"
+                app:tint="@color/white" />
 
-    </com.google.android.material.appbar.AppBarLayout>
+        </LinearLayout>
+
+    </androidx.appcompat.widget.Toolbar>
+
 
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/appBarLayout"
-        android:background="#fafbfd"
+        android:layout_below="@id/toolbar"
+        android:background="@color/white"
         android:orientation="horizontal"
         android:padding="12dp">
 
@@ -105,33 +115,18 @@
         android:layout_above="@+id/bottomSpace3"
         android:layout_below="@id/linearLayout"
         android:layout_marginBottom="0dp"
-        android:background="#fafbfd"
+        android:background="@color/white"
         android:clipToPadding="false"
-        android:paddingTop="3dp"
-        android:paddingBottom="3dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         tools:ignore="SpeakableTextPresentCheck" />
 
     <View
         android:id="@+id/bottomSpace3"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="54dp"
         android:layout_alignParentBottom="true"
         android:background="@color/blue" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fab3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/bottomSpace3"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="@color/blue"
-        android:contentDescription="TODO"
-        android:src="@drawable/add_repair_24px"
-        app:maxImageSize="32dp"
-        app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.FAB.Circle"
-        app:tint="@color/white" />
 
     <LinearLayout
         android:id="@+id/loadingContainer"
