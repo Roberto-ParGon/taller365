@@ -1,230 +1,265 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAFBFD">
 
-    <LinearLayout
+    <!-- Contenido principal en ScrollView -->
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <!-- AppBar -->
-        <com.google.android.material.appbar.AppBarLayout
-            android:id="@+id/appBarLayout"
+        <LinearLayout
+            android:id="@+id/main_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <!-- AppBar -->
+            <com.google.android.material.appbar.AppBarLayout
+                android:id="@+id/appBarLayout"
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/blue"
-                android:theme="@style/NoToolBar">
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:background="@color/blue"
+                    android:theme="@style/NoToolBar">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <ImageButton
+                            android:id="@+id/btnBack"
+                            android:layout_width="50dp"
+                            android:layout_height="50dp"
+                            android:background="@android:color/transparent"
+                            android:contentDescription="Volver"
+                            android:src="@drawable/arrow_back_24px"
+                            app:tint="@color/white" />
+
+                        <TextView
+                            android:id="@+id/tvFormTittle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="60dp"
+                            android:fontFamily="@font/inter_semibold"
+                            android:text="Ingresar Refacciones"
+                            android:textColor="@color/white"
+                            android:textSize="18sp" />
+                    </LinearLayout>
+
+                </androidx.appcompat.widget.Toolbar>
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <!-- CardView -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/mainContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="24dp"
+                android:layout_marginEnd="24dp"
+                android:layout_marginBottom="24dp"
+                android:background="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="20dp">
 
-                    <ImageButton
-                        android:id="@+id/btnBack"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Volver"
-                        android:src="@drawable/arrow_back_24px"
-                        app:tint="@color/white" />
+                    <!-- Contenedor para imagen -->
+                    <FrameLayout
+                        android:id="@+id/imageUploadContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/image_container_background"
+                        android:clickable="true"
+                        android:foreground="?android:attr/selectableItemBackground">
 
+                        <!-- ImageView para imagen grande que ocupa todo el contenedor -->
+                        <ImageView
+                            android:id="@+id/imageContainerImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="Imagen cargada"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/placeholderImage"
+                            android:layout_width="60dp"
+                            android:layout_height="60dp"
+                            android:layout_gravity="center"
+                            android:src="@drawable/ic_upload_24px" />
+                    </FrameLayout>
+
+                    <!-- Spinner: Tipo -->
                     <TextView
-                        android:id="@+id/tvFormTittle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
-                        android:fontFamily="@font/inter_semibold"
-                        android:text="Ingresar Refacciones"
-                        android:textColor="@color/white"
-                        android:textSize="18sp" />
+                        android:layout_marginBottom="4dp"
+                        android:text="Tipo:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTipo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_background"
+                        android:spinnerMode="dropdown" />
+
+                    <!-- EditText: Nombre -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Nombre:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editNombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_background"
+                        android:hint="Ingrese el nombre"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
+
+                    <!-- EditText: Marca -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Marca:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editMarca"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_background"
+                        android:hint="Ingrese la marca"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
+
+                    <!-- EditText: Modelo -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Modelo:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editModelo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/edittext_background"
+                        android:hint="Ingrese el modelo"
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
+
+                    <!-- EditText: Cantidad -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Cantidad:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/editCantidad"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:background="@drawable/edittext_background"
+                        android:hint="Ingrese la cantidad"
+                        android:inputType="number"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
+
+                    <!-- Botón Guardar -->
+                    <Button
+                        android:id="@+id/btnGuardar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="#5CB85C"
+                        android:padding="12dp"
+                        android:text="Guardar"
+                        android:textColor="#FFFFFF"
+                        app:cornerRadius="10dp"
+                        app:icon="@drawable/save_24px"
+                        app:iconGravity="textEnd"
+                        app:iconTint="@color/white" />
                 </LinearLayout>
 
-            </androidx.appcompat.widget.Toolbar>
+            </androidx.cardview.widget.CardView>
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </LinearLayout>
 
-        <!-- CardView -->
-        <androidx.cardview.widget.CardView
-            android:id="@+id/mainContainer"
-            android:layout_width="match_parent"
+    </ScrollView>
+
+    <LinearLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone"
+        android:elevation="10dp">
+
+        <ProgressBar
+            android:id="@+id/progressBarLoading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:indeterminateTint="#3286aa" />
+
+        <TextView
+            android:id="@+id/tvLoadingText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="24dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginEnd="24dp"
-            android:layout_marginBottom="24dp"
-            android:background="@android:color/transparent"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="20dp">
-
-                <!-- Contenedor para imagen -->
-                <FrameLayout
-                    android:id="@+id/imageUploadContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="100dp"
-                    android:layout_marginBottom="16dp"
-                    android:background="@drawable/image_container_background"
-                    android:clickable="true"
-                    android:foreground="?android:attr/selectableItemBackground">
-
-                    <!-- ImageView para imagen grande que ocupa todo el contenedor -->
-                    <ImageView
-                        android:id="@+id/imageContainerImage"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        android:contentDescription="Imagen cargada"
-                        android:visibility="gone" />
-
-                    <ImageView
-                        android:id="@+id/placeholderImage"
-                        android:layout_width="60dp"
-                        android:layout_height="60dp"
-                        android:layout_gravity="center"
-                        android:src="@drawable/ic_upload_24px" />
-                </FrameLayout>
-
-                <!-- Spinner: Tipo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Tipo:"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <Spinner
-                    android:id="@+id/spinnerTipo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:spinnerMode="dropdown" />
-
-                <!-- EditText: Nombre -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Nombre:"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/editNombre"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Ingrese el nombre"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="#888888"
-                    android:textSize="16sp" />
-
-                <!-- EditText: Marca -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Marca:"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/editMarca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Ingrese la marca"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="#888888"
-                    android:textSize="16sp" />
-
-                <!-- EditText: Modelo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Modelo:"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/editModelo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Ingrese el modelo"
-                    android:inputType="text"
-                    android:textColor="@color/black"
-                    android:textColorHint="#888888"
-                    android:textSize="16sp" />
-
-                <!-- EditText: Cantidad -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="4dp"
-                    android:text="Cantidad:"
-                    android:textColor="#000000"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
-
-                <EditText
-                    android:id="@+id/editCantidad"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/edittext_background"
-                    android:hint="Ingrese la cantidad"
-                    android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="#888888"
-                    android:textSize="16sp" />
-
-                <!-- Botón Guardar -->
-                <Button
-                    android:id="@+id/btnGuardar"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="#5CB85C"
-                    android:padding="12dp"
-                    android:text="Guardar"
-                    android:textColor="#FFFFFF"
-                    app:cornerRadius="10dp"
-                    app:icon="@drawable/save_24px"
-                    app:iconGravity="textEnd"
-                    app:iconTint="@color/white" />
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
+            android:layout_marginTop="8dp"
+            android:text="Cargando..."
+            android:textColor="#3286aa"
+            android:textSize="16sp" />
     </LinearLayout>
 
-</ScrollView>
+</FrameLayout>

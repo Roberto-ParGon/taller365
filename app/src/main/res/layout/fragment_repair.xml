@@ -32,7 +32,7 @@
                     android:background="@android:color/transparent"
                     android:contentDescription="Salir"
                     android:cropToPadding="false"
-                    android:src="@drawable/arrow_back_24px"
+                    android:src="@drawable/logout_24px"
                     app:tint="@color/white" />
 
                 <LinearLayout
@@ -102,7 +102,9 @@
         android:id="@+id/recyclerViewRepairs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_above="@+id/bottomSpace3"
         android:layout_below="@id/linearLayout"
+        android:layout_marginBottom="0dp"
         android:background="#fafbfd"
         android:clipToPadding="false"
         android:paddingTop="3dp"
@@ -130,4 +132,31 @@
         app:maxImageSize="32dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.FAB.Circle"
         app:tint="@color/white" />
+
+    <LinearLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarLoading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:indeterminateTint="#3286aa" />
+
+        <TextView
+            android:id="@+id/tvLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cargando refacciones..."
+            android:textColor="#3286aa"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
+    </LinearLayout>
+
 </RelativeLayout>

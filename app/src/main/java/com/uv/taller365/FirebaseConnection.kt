@@ -2,6 +2,9 @@ package com.uv.taller365
 
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class FirebaseConnection {
 
@@ -16,7 +19,7 @@ class FirebaseConnection {
         brand: String,
         model: String,
         inventory: String,
-        imagePath: String?, // ruta de la imagen local
+        imagePath: String?,
         onComplete: (Boolean) -> Unit
     ) {
         val db = FirebaseDatabase.getInstance().getReference("repairs")
@@ -33,16 +36,49 @@ class FirebaseConnection {
     /* Metodo para obtener todas las refacciones */
     fun fetchRepairs(onResult: (List<Repair>) -> Unit, onError: (Exception) -> Unit) {
         val db = FirebaseDatabase.getInstance().getReference("repairs")
-        db.get().addOnSuccessListener { snapshot ->
-            val repairs = mutableListOf<Repair>()
-            for (child in snapshot.children) {
-                val repair = child.getValue(Repair::class.java)
-                repair?.let { repairs.add(it) }
+        db.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val repairs = mutableListOf<Repair>()
+                for (child in snapshot.children) {
+                    val repair = child.getValue(Repair::class.java)
+                    repair?.let { repairs.add(it) }
+                }
+                onResult(repairs)
             }
-            onResult(repairs)
-        }.addOnFailureListener { exception ->
-            onError(exception)
-        }
+
+            override fun onCancelled(error: DatabaseError) {
+                onError(error.toException())
+            }
+        })
+    }
+
+    /* Metodo para actualizar una refaccion */
+    fun updateRepair(
+        repairId: String,
+        repairType: String,
+        title: String,
+        brand: String,
+        model: String,
+        inventory: String,
+        imagePath: String?,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val db = FirebaseDatabase.getInstance().getReference("repairs")
+        val updatedRepair = Repair(repairId, repairType, title, brand, model, inventory, imagePath)
+        db.child(repairId).setValue(updatedRepair)
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+    /* Metodo para eliminar una refaccion */
+    fun deleteRepair(
+        repairId: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val db = FirebaseDatabase.getInstance().getReference("repairs")
+        db.child(repairId).removeValue()
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
     }
 
 }
