@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
@@ -25,20 +25,21 @@
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
                 android:background="@drawable/circle_background"
-                android:padding="4dp"
+                android:padding="0dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/circle_background" />
 
             <!-- Información de texto -->
             <LinearLayout
                 android:id="@+id/textContainer"
-                android:layout_width="310dp"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+
+                android:layout_toEndOf="@id/ivVehicleImage"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="12dp"
-                android:layout_marginEnd="8dp"
-                android:layout_toEndOf="@id/ivVehicleImage"
+                android:layout_marginEnd="12dp"
                 android:orientation="vertical">
 
                 <TextView
@@ -82,9 +83,6 @@
                     android:textColor="@color/green"
                     android:textStyle="bold" />
             </LinearLayout>
-
-            <!-- Íconos de editar y eliminar -->
-
         </RelativeLayout>
     </androidx.cardview.widget.CardView>
 </RelativeLayout>
