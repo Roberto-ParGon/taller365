@@ -102,6 +102,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/linearLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="0dp"
         android:background="#fafbfd"
         android:clipToPadding="false"
         android:paddingTop="3dp"

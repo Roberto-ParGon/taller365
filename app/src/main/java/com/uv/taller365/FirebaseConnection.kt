@@ -45,4 +45,24 @@ class FirebaseConnection {
         }
     }
 
+    fun writeNewWorkshop(
+        name: String,
+        address: String,
+        phone: String,
+        email: String,
+        code: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val db = FirebaseDatabase.getInstance().getReference("workshops")
+        val id = db.push().key ?: run {
+            onComplete(false)
+            return
+        }
+        val workshop = Workshop(id, name, address, phone, email, code)
+        db.child(id).setValue(workshop)
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+
 }
