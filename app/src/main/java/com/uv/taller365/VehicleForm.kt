@@ -2,23 +2,21 @@ package com.uv.taller365
 
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.util.Base64
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.*
 import com.uv.taller365.databinding.ActivityVehicleFormBinding
 import com.uv.taller365.helpers.ImageHelper
-import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.lifecycle.lifecycleScope
+import kotlinx.coroutines.launch
+import com.bumptech.glide.Glide
 
 class VehicleForm : AppCompatActivity() {
 
@@ -52,8 +50,6 @@ class VehicleForm : AppCompatActivity() {
             binding.imageUploadContainer.requestLayout()
             ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
         }
-
-        val imageBase64 = selectedImageUri?.let { ImageHelper.uriToBase64(contentResolver, it) }
 
         binding.imageUploadContainer.setOnClickListener {
             showCustomOptionDialog()
@@ -181,14 +177,6 @@ class VehicleForm : AppCompatActivity() {
         ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
     }
 
-    private fun loadImageFromBase64(base64: String) {
-        val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
-        binding.imageUploadContainer.requestLayout()
-
-        ImageHelper.loadImageFromBase64(this, base64, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
-    }
-
     private fun loadImageFromResource(resId: Int) {
         ImageHelper.loadImageFromResource(this, resId, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer)
         binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
@@ -198,20 +186,6 @@ class VehicleForm : AppCompatActivity() {
     private fun resetImagePlaceholder() {
         val defaultHeight = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
         ImageHelper.resetImage(binding.imageUploadContainer, binding.imageContainerImage, binding.placeholderImage, defaultHeight)
-    }
-
-    fun bitmapToBase64(bitmap: Bitmap): String {
-        val stream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 90, stream)
-        return android.util.Base64.encodeToString(stream.toByteArray(), Base64.DEFAULT)
-    }
-
-    fun uriToBase64(uri: Uri): String? = try {
-        val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, uri)
-        bitmapToBase64(bitmap)
-    } catch (e: Exception) {
-        e.printStackTrace()
-        null
     }
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->

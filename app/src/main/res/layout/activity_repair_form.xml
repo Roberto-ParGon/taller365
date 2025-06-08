@@ -83,6 +83,16 @@
                     android:padding="20dp">
 
                     <!-- Contenedor para imagen -->
+                    <TextView
+                        android:id="@+id/imageText"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="4dp"
+                        android:text="Subir imagen:"
+                        android:textColor="#000000"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
                     <FrameLayout
                         android:id="@+id/imageUploadContainer"
                         android:layout_width="match_parent"

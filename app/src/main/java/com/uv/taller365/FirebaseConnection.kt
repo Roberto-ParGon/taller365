@@ -81,6 +81,7 @@ class FirebaseConnection {
             .addOnFailureListener { onComplete(false) }
     }
 
+    /* Operaciones de talleres */
     fun writeNewWorkshop(
         name: String,
         address: String,
