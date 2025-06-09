@@ -183,6 +183,13 @@ class RepairForm : AppCompatActivity() {
     private fun saveNewRepair() {
         showLoading(true)
 
+        val workshopCode = intent.getStringExtra("workshop_code") ?: run {
+            showLoading(false)
+            Toast.makeText(this@RepairForm, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         lifecycleScope.launch {
             val imageUrl = try {
                 selectedImageUri?.let { uploadImageToSupabase(it, this@RepairForm) }
@@ -198,6 +205,7 @@ class RepairForm : AppCompatActivity() {
             }
 
             database.writeNewRepair(
+                workshopCode,
                 binding.spinnerTipo.selectedItem.toString(),
                 binding.editNombre.text.toString(),
                 binding.editMarca.text.toString(),
@@ -213,10 +221,18 @@ class RepairForm : AppCompatActivity() {
                 ).show()
                 if (success) finish()
             }
+
         }
     }
 
     private fun updateRepair() {
+        val workshopCode = intent.getStringExtra("workshop_code") ?: run {
+            showLoading(false)
+            Toast.makeText(this@RepairForm, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
         val id = repairId ?: run {
             Toast.makeText(this, "ID de refacción inválido", Toast.LENGTH_SHORT).show()
             return
@@ -230,6 +246,7 @@ class RepairForm : AppCompatActivity() {
             } ?: intent.getStringExtra("image_uri")
 
             database.updateRepair(
+                workshopCode,
                 id,
                 binding.spinnerTipo.selectedItem.toString(),
                 binding.editNombre.text.toString(),
@@ -246,6 +263,7 @@ class RepairForm : AppCompatActivity() {
                 ).show()
                 if (success) finish()
             }
+
         }
     }
 

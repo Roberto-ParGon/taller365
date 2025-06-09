@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val workshopId = intent.getStringExtra("WORKSHOP_ID") ?: ""
+
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
@@ -26,7 +28,7 @@ class MainActivity : AppCompatActivity() {
         bottomNav = findViewById(R.id.bottomNav)
         viewPager = findViewById(R.id.viewpager)
 
-        adapter = FragmentStateAdapter(this)
+        adapter = FragmentStateAdapter(this, workshopId)
         viewPager.adapter = adapter
 
         bottomNav.setOnItemSelectedListener {

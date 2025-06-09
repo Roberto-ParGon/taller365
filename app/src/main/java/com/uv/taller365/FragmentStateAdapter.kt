@@ -1,19 +1,28 @@
 package com.uv.taller365
 
+import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class FragmentStateAdapter(fragmentActivity: FragmentActivity) : FragmentStateAdapter(fragmentActivity) {
-    override fun getItemCount(): Int = 3
+class FragmentStateAdapter(
+    fragmentActivity: FragmentActivity,
+    private val workshopId: String
+) : FragmentStateAdapter(fragmentActivity) {
+
+    override fun getItemCount(): Int = 4
 
     override fun createFragment(position: Int): Fragment {
-        return when (position) {
-            0 -> VehiclesFragment()
-            1 -> RepairFragment()
-            2 -> ClientsFragment()
-            else -> throw IllegalStateException("Fragment desconocido para posición $position")
+        val bundle = Bundle().apply {
+            putString("WORKSHOP_ID", workshopId)
+        }
 
+        return when (position) {
+            0 -> VehiclesFragment().apply { arguments = bundle }
+            1 -> RepairFragment().apply { arguments = bundle }
+            2 -> ClientsFragment().apply { arguments = bundle }
+            3 -> ModifyWorkshop().apply { arguments = bundle }
+            else -> throw IllegalStateException("Fragment desconocido para posición $position")
         }
     }
 }
