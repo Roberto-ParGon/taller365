@@ -1,63 +1,50 @@
 package com.uv.taller365
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.*
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textfield.TextInputEditText
 
-class ModifyWorkshop : AppCompatActivity() {
+class ModifyWorkshop : Fragment() {
 
     @SuppressLint("MissingInflatedId")
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContentView(R.layout.activity_modify_workshop)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_workshop_details, container, false)
+
+        view.findViewById<ImageButton>(R.id.btnLogout)?.setOnClickListener {
+            activity?.finish()
+        }
 
         // Ajustes para el layout principal
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
+        ViewCompat.setOnApplyWindowInsetsListener(view.findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
 
-        // Referencias a los campos de texto
-        val nombreTaller = findViewById<EditText>(R.id.etWorkshopName)
-        val direccionTaller = findViewById<EditText>(R.id.etWorkshopAddress)
-        val telefonoEncargado = findViewById<EditText>(R.id.etPhone)
-        val correoEncargado = findViewById<EditText>(R.id.etEmail)
 
-        // Botones
-        val btnSaveWorkshop = findViewById<MaterialButton>(R.id.btnSaveWorkshop)
-        val btnDeleteWorkshop = findViewById<MaterialButton>(R.id.btnDeleteWorkshop)
-        val btnBack = findViewById<ImageButton>(R.id.btnBack)
+        val nombreTaller = view.findViewById<EditText>(R.id.etWorkshopName)
+        val direccionTaller = view.findViewById<EditText>(R.id.etWorkshopAddress)
+        val telefonoEncargado = view.findViewById<EditText>(R.id.etPhone)
+        val correoEncargado = view.findViewById<EditText>(R.id.etEmail)
 
-        // Acción del botón guardar
+        val btnSaveWorkshop = view.findViewById<MaterialButton>(R.id.btnSaveWorkshop)
+        val btnDeleteWorkshop = view.findViewById<MaterialButton>(R.id.btnDeleteWorkshop)
+        val btnDeleteUser = view.findViewById<ImageButton>(R.id.btnDeleteUser)
+
         btnSaveWorkshop.setOnClickListener {
-            Toast.makeText(this, "Cambios guardados", Toast.LENGTH_SHORT).show()
-            // Aquí podrías guardar en base de datos o enviar a servidor
+            Toast.makeText(requireContext(), "Cambios guardados", Toast.LENGTH_SHORT).show()
         }
-
-        // Acción del botón eliminar
-        btnDeleteWorkshop.setOnClickListener {
-            Toast.makeText(this, "Taller eliminado", Toast.LENGTH_SHORT).show()
-            // Aquí podrías eliminar el taller de la base de datos
-        }
-
-        // Acción del botón volver
-        btnBack.setOnClickListener {
-            val intent = Intent(this, VehiclesFragment::class.java)
-            startActivity(intent)
-            finish() // Opcional: cierra esta pantalla
-        }
-
-        val btnDeleteUser = findViewById<ImageButton>(R.id.btnDeleteUser)
 
         btnDeleteWorkshop.setOnClickListener {
             showDeleteWorkshopDialog("Nombre del taller")
@@ -67,10 +54,12 @@ class ModifyWorkshop : AppCompatActivity() {
             showDeleteUserDialog("Juan Medina")
         }
 
+        return view
     }
-    fun showDeleteWorkshopDialog(workshopName: String) {
+
+    private fun showDeleteWorkshopDialog(workshopName: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete_workshop, null)
-        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
+        val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
 
         dialogView.findViewById<TextView>(R.id.tvMessage).text =
             "¿Estás seguro que deseas eliminar el taller \"$workshopName\"?"
@@ -80,17 +69,16 @@ class ModifyWorkshop : AppCompatActivity() {
         }
 
         dialogView.findViewById<Button>(R.id.btnDelete).setOnClickListener {
-            // Lógica para eliminar taller
-            Toast.makeText(this, "Taller eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Taller eliminado", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         dialog.show()
     }
 
-    fun showDeleteUserDialog(userName: String) {
+    private fun showDeleteUserDialog(userName: String) {
         val dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete_user, null)
-        val dialog = AlertDialog.Builder(this).setView(dialogView).create()
+        val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
 
         dialogView.findViewById<TextView>(R.id.tvMessage).text =
             "¿Estás seguro que deseas eliminar al usuario \"$userName\"?"
@@ -100,13 +88,10 @@ class ModifyWorkshop : AppCompatActivity() {
         }
 
         dialogView.findViewById<Button>(R.id.btnDelete).setOnClickListener {
-            // Lógica para eliminar usuario
-            Toast.makeText(this, "Usuario eliminado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(requireContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
 
         dialog.show()
     }
-
-
 }

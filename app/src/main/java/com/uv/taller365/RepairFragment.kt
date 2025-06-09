@@ -27,10 +27,13 @@ class RepairFragment : Fragment() {
     // Conexión a Firebase
     private val firebaseConnection = FirebaseConnection()
 
+    private var workshopId: String? = null
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        workshopId = arguments?.getString("WORKSHOP_ID")
         val view = inflater.inflate(R.layout.fragment_repair, container, false)
 
         // Fondo del fragmento
@@ -84,6 +87,7 @@ class RepairFragment : Fragment() {
         loadingContainer.visibility = View.VISIBLE
 
         firebaseConnection.fetchRepairs(
+            workshopId!!,
             onResult = { repairs ->
                 loadingContainer.visibility = View.GONE
                 repairsList.clear()
@@ -101,20 +105,26 @@ class RepairFragment : Fragment() {
         )
     }
 
+
     // Navega al formulario para registrar una nueva refacción
     private fun navigateToRepairRegistration() {
-        try {
-            val intent = Intent(requireActivity(), RepairForm::class.java).apply {
-                putExtra("is_edit_mode", false)
-            }
-            startActivity(intent)
-        } catch (e: Exception) {
-            Toast.makeText(context, "Error al abrir el formulario: ${e.message}", Toast.LENGTH_SHORT).show()
+        if (workshopId.isNullOrEmpty()) {
+            Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
+            return
         }
+        val intent = Intent(requireActivity(), RepairForm::class.java).apply {
+            putExtra("is_edit_mode", false)
+            putExtra("workshop_code", workshopId)
+        }
+        startActivity(intent)
     }
 
     // Navega al formulario para editar una refacción existente
     private fun openEditRepairActivity(item: Repair) {
+        if (workshopId.isNullOrEmpty()) {
+            Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
+            return
+        }
         val intent = Intent(requireActivity(), RepairForm::class.java).apply {
             putExtra("is_edit_mode", true)
             putExtra("repair_id", item.repairId)
@@ -124,6 +134,7 @@ class RepairFragment : Fragment() {
             putExtra("cantidad", item.inventory)
             putExtra("tipo", item.repairType)
             putExtra("image_uri", item.imagePath)
+            putExtra("workshop_code", workshopId)
         }
         startActivity(intent)
     }
@@ -144,7 +155,10 @@ class RepairFragment : Fragment() {
 
     // Elimina una refacción de Firebase
     private fun deleteRepair(item: Repair) {
-        firebaseConnection.deleteRepair(item.repairId ?: "") { success ->
+        firebaseConnection.deleteRepair(
+            workshopId!!,
+            item.repairId ?: ""
+        ) { success ->
             if (success) {
                 Toast.makeText(context, "Refacción '${item.title}' eliminada", Toast.LENGTH_SHORT).show()
                 repairsList.remove(item)
@@ -154,6 +168,7 @@ class RepairFragment : Fragment() {
             }
         }
     }
+
 
     // Adaptador para mostrar las refacciones
     private inner class RepairAdapter(private val items: List<Repair>) :
