@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.database
 
 import io.github.jan.supabase.createSupabaseClient
 import io.github.jan.supabase.storage.Storage

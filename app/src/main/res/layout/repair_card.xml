@@ -6,7 +6,7 @@
     android:layout_marginHorizontal="4dp"
     app:cardCornerRadius="12dp"
     app:cardElevation="6dp"
-    app:cardBackgroundColor="@android:color/white">
+    app:cardBackgroundColor="@color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -41,24 +41,27 @@
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
                 android:text="Disco Rotor Delantero Freno"
                 android:textColor="@color/black"
                 android:textSize="17sp"
                 android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tvBrand"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="8dp"
-                    android:text="Marca: Fritec"
-                    android:textColor="@color/dark_gray"
-                    android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tvBrand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:fontFamily="@font/inter_medium"
+                android:text="Marca: Fritec"
+                android:textColor="@color/dark_gray"
+                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvModel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_medium"
                 android:text="Modelo: FR08104"
                 android:textColor="@color/dark_gray"
                 android:textSize="14sp" />
@@ -67,8 +70,9 @@
                 android:id="@+id/tvInventory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
                 android:text="En inventario: 03"
-                android:textColor="@android:color/black"
+                android:textColor="@color/black"
                 android:textSize="14sp"
                 android:textStyle="bold" />
         </LinearLayout>

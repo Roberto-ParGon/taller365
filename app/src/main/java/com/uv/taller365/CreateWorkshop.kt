@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.uv.taller365.database.FirebaseConnection
 
 class CreateWorkshop : AppCompatActivity() {
 

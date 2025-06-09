@@ -11,12 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import com.uv.taller365.databinding.ActivityVehicleFormBinding
-import com.uv.taller365.helpers.ImageHelper
+import com.uv.taller365.helpers.*
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.launch
-import com.bumptech.glide.Glide
 
 class VehicleForm : AppCompatActivity() {
 
@@ -199,7 +196,7 @@ class VehicleForm : AppCompatActivity() {
     }
 
     private fun showCustomOptionDialog() {
-        ImageHelper.showImagePickerDialog(
+        CustomDialogHelper.showImagePickerDialog(
             activity = this,
             createUri = { ImageHelper.createImageUri(this) },
             onCameraSelected = { uri ->

@@ -30,7 +30,7 @@
             android:name=".ModifyWorkshop"
             android:exported="false" />
         <activity
-            android:name=".RepairForm"
+            android:name=".repairFiles.RepairForm"
             android:exported="false"
             android:windowSoftInputMode="adjustResize"
             />

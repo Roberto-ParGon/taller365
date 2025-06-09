@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.uv.taller365.repairFiles.RepairFragment
 
 class FragmentStateAdapter(
     fragmentActivity: FragmentActivity,

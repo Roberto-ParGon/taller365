@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog">
+
+    <TextView
+        android:id="@+id/dialogFilterTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Filtrar por tipo"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <RadioGroup
+        android:id="@+id/filterRadioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <!-- Radios se llenan por código -->
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/dialogFilterApply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/blue"
+        android:fontFamily="@font/inter_semibold"
+        android:text="Aplicar"
+        android:textColor="@color/white" />
+
+</LinearLayout>

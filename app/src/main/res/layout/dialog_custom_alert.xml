@@ -18,7 +18,8 @@
         android:id="@+id/dialogTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="6dp"
+        android:fontFamily="@font/inter_semibold"
         android:text="¿Estás seguro?"
         android:textColor="@color/black"
         android:textSize="18sp"
@@ -29,9 +30,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/inter_semibold"
         android:gravity="center"
         android:text="Esta acción no se puede deshacer."
-        android:textColor="@color/gray"
+        android:textColor="@color/dark_gray"
         android:textSize="14sp" />
 
     <LinearLayout
@@ -48,6 +50,7 @@
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
             android:backgroundTint="@color/dark_gray"
+            android:fontFamily="@font/inter_semibold"
             android:text="Cancelar"
             android:textColor="@color/white" />
 
@@ -57,6 +60,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:backgroundTint="@color/blue"
+            android:fontFamily="@font/inter_semibold"
             android:text="Aceptar"
             android:textColor="@color/white" />
     </LinearLayout>

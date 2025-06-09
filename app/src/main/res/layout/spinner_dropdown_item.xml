@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="12dp"
-    android:textColor="#000000"
+    android:textColor="@color/black"
     android:textSize="16sp"
+    android:fontFamily="@font/inter_semibold"
     android:background="@drawable/spinner_dropdown_background" />

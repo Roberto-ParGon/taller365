@@ -12,7 +12,7 @@ import com.bumptech.glide.load.resource.bitmap.*
 import com.bumptech.glide.request.RequestOptions
 import com.uv.taller365.R
 import android.content.Context
-import com.uv.taller365.SupabaseClient
+import com.uv.taller365.database.SupabaseClient
 import io.github.jan.supabase.storage.storage
 
 suspend fun uploadImageToSupabase(uri: Uri, context: Context): String? {
@@ -89,46 +89,5 @@ object ImageHelper {
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             contentValues
         )
-    }
-
-    fun showImagePickerDialog(
-        activity: AppCompatActivity,
-        createUri: () -> Uri?,
-        onCameraSelected: (Uri) -> Unit,
-        onGallerySelected: () -> Unit
-    ) {
-        val view = activity.layoutInflater.inflate(R.layout.dialog_custom_alert, null)
-        val dialog = android.app.Dialog(activity).apply {
-            setContentView(view)
-            setCancelable(true)
-            window?.setBackgroundDrawableResource(android.R.color.transparent)
-        }
-
-        val titleView = view.findViewById<TextView>(R.id.dialogTitle)
-        val messageView = view.findViewById<TextView>(R.id.dialogMessage)
-        val iconView = view.findViewById<ImageView>(R.id.dialogIcon)
-        val acceptButton = view.findViewById<Button>(R.id.dialogAcceptButton)
-        val cancelButton = view.findViewById<Button>(R.id.dialogCancelButton)
-
-        titleView.text = "Selecciona una opción"
-        messageView.visibility = View.GONE
-        iconView.setImageResource(R.drawable.camara)
-
-        acceptButton.text = "Tomar \n foto"
-        cancelButton.text = "Seleccionar de galería"
-
-        acceptButton.setOnClickListener {
-            dialog.dismiss()
-            createUri()?.let(onCameraSelected)
-        }
-
-        cancelButton.setOnClickListener {
-            dialog.dismiss()
-            onGallerySelected()
-        }
-
-        dialog.show()
-        val width = (activity.resources.displayMetrics.widthPixels * 0.85).toInt()
-        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 }

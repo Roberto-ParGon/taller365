@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.repairFiles
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -7,39 +7,48 @@ import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
-import kotlinx.coroutines.launch
+import com.uv.taller365.R
+import com.uv.taller365.database.FirebaseConnection
+import com.uv.taller365.helpers.*
 
 class RepairFragment : Fragment() {
 
-    // Lista que contiene las refacciones obtenidas
+    // Lista de refacciones que se muestran en el RecyclerView
     private val repairsList = mutableListOf<Repair>()
 
-    // Vistas de la interfaz
+    // Vistas principales
     private lateinit var loadingContainer: LinearLayout
     private lateinit var recyclerView: RecyclerView
-
-    // Adaptador para el RecyclerView
     private lateinit var adapter: RepairAdapter
 
-    // Conexión a Firebase
+    // Conexión con Firebase
     private val firebaseConnection = FirebaseConnection()
 
+    // ID del taller (recibido como argumento)
     private var workshopId: String? = null
+
+    // Lista de todas las refacciones para el filtrado
+    private val allRepairsList = mutableListOf<Repair>()
+    private var currentSelectedTipo: String = "Todos"
+
+    // Buscador
+    private lateinit var searchInput: EditText
+
+    // ---------------------- Ciclo de vida ----------------------
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        workshopId = arguments?.getString("WORKSHOP_ID")
         val view = inflater.inflate(R.layout.fragment_repair, container, false)
+        workshopId = arguments?.getString("WORKSHOP_ID")
 
-        // Fondo del fragmento
+        // Fondo de color del fragmento
         view.setBackgroundColor(resources.getColor(R.color.lightBlue, null))
 
-        // Botón de cerrar sesión
+        // Botón para cerrar sesión
         view.findViewById<View>(R.id.btnLogout)?.setOnClickListener {
             activity?.finish()
         }
@@ -48,21 +57,51 @@ class RepairFragment : Fragment() {
         loadingContainer = view.findViewById(R.id.loadingContainer)
         recyclerView = view.findViewById(R.id.recyclerViewRepairs)
 
-        // Configuración del RecyclerView
-        setupRecyclerView()
+        // Buscador
+        searchInput = view.findViewById(R.id.searchInput)
+        setupSearchBar()
 
-        // Carga de refacciones desde Firebase
+        // Configuración de lista y carga de datos
+        setupRecyclerView()
         loadRepairs()
 
-        // Navegar al formulario de registro de refacción
+        // Botón para registrar nueva refacción
         view.findViewById<ImageButton>(R.id.fab3)?.setOnClickListener {
             navigateToRepairRegistration()
+        }
+
+        // Botón para filtrar refacciones
+        view.findViewById<ImageButton>(R.id.btnFilter)?.setOnClickListener {
+            CustomDialogHelper.showFilterDialog(
+                activity = requireActivity(),
+                tipos = listOf("Todos", "Repuesto", "Accesorio", "Herramienta", "Otro"),
+                selectedTipo = currentSelectedTipo,
+                onFilterSelected = { tipo ->
+                    currentSelectedTipo = tipo // Guardar el tipo seleccionado
+
+                    repairsList.clear()
+                    if (tipo == "Todos") {
+                        repairsList.addAll(allRepairsList)
+                    } else {
+                        repairsList.addAll(allRepairsList.filter {
+                            it.repairType.equals(tipo, ignoreCase = true)
+                        })
+                    }
+                    adapter.notifyDataSetChanged()
+                }
+            )
         }
 
         return view
     }
 
-    // Configura el RecyclerView
+    override fun onResume() {
+        super.onResume()
+        loadRepairs()
+    }
+
+    // ---------------------- Configuración del RecyclerView ----------------------
+
     private fun setupRecyclerView() {
         adapter = RepairAdapter(repairsList)
 
@@ -82,16 +121,50 @@ class RepairFragment : Fragment() {
         }
     }
 
-    // Carga las refacciones desde Firebase
+    // ---------------------- Buscador ----------------------
+
+    private fun setupSearchBar() {
+        searchInput.addTextChangedListener(object : android.text.TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterRepairs(s.toString())
+            }
+
+            override fun afterTextChanged(s: android.text.Editable?) {}
+        })
+    }
+
+    private fun filterRepairs(query: String) {
+        val filtered = allRepairsList.filter {
+            it.title?.contains(query, ignoreCase = true) == true ||
+                    it.brand?.contains(query, ignoreCase = true) == true ||
+                    it.model?.contains(query, ignoreCase = true) == true
+        }.filter {
+            currentSelectedTipo == "Todos" || it.repairType.equals(currentSelectedTipo, ignoreCase = true)
+        }
+
+        repairsList.clear()
+        repairsList.addAll(filtered)
+        adapter.notifyDataSetChanged()
+    }
+
+    // ---------------------- Carga de datos ----------------------
+
     private fun loadRepairs() {
-        loadingContainer.visibility = View.VISIBLE
+        if (repairsList.isEmpty()) {
+            loadingContainer.visibility = View.VISIBLE
+        }
 
         firebaseConnection.fetchRepairs(
-            workshopId!!,
+            workshopId ?: return,
             onResult = { repairs ->
                 loadingContainer.visibility = View.GONE
+                allRepairsList.clear()
+                allRepairsList.addAll(repairs)
+
                 repairsList.clear()
-                repairsList.addAll(repairs)
+                repairsList.addAll(allRepairsList)
                 adapter.notifyDataSetChanged()
             },
             onError = { exception ->
@@ -105,13 +178,14 @@ class RepairFragment : Fragment() {
         )
     }
 
+    // ---------------------- Navegación ----------------------
 
-    // Navega al formulario para registrar una nueva refacción
     private fun navigateToRepairRegistration() {
         if (workshopId.isNullOrEmpty()) {
             Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
             return
         }
+
         val intent = Intent(requireActivity(), RepairForm::class.java).apply {
             putExtra("is_edit_mode", false)
             putExtra("workshop_code", workshopId)
@@ -119,12 +193,12 @@ class RepairFragment : Fragment() {
         startActivity(intent)
     }
 
-    // Navega al formulario para editar una refacción existente
     private fun openEditRepairActivity(item: Repair) {
         if (workshopId.isNullOrEmpty()) {
             Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
             return
         }
+
         val intent = Intent(requireActivity(), RepairForm::class.java).apply {
             putExtra("is_edit_mode", true)
             putExtra("repair_id", item.repairId)
@@ -139,24 +213,24 @@ class RepairFragment : Fragment() {
         startActivity(intent)
     }
 
-    // Muestra un diálogo de confirmación para eliminar una refacción
+    // ---------------------- Eliminación ----------------------
+
     private fun showDeleteConfirmationDialog(item: Repair) {
-        android.app.AlertDialog.Builder(requireContext())
-            .setTitle("Confirmar eliminación de refacción")
-            .setMessage("¿Estás seguro que deseas eliminar la refacción '${item.title}'?")
-            .setNegativeButton("Cancelar") { dialog, _ -> dialog.dismiss() }
-            .setPositiveButton("Eliminar") { dialog, _ ->
-                deleteRepair(item)
-                dialog.dismiss()
-            }
-            .create()
-            .show()
+
+        CustomDialogHelper.showConfirmationDialog(
+            activity = requireActivity(),
+            title = "Confirmar eliminación",
+            message = "¿Estás seguro que deseas eliminar la refacción '${item.title}'?",
+            iconResId = R.drawable.warning,
+            confirmText = "Eliminar",
+            cancelText = "Cancelar",
+            onConfirm = { deleteRepair(item) }
+        )
     }
 
-    // Elimina una refacción de Firebase
     private fun deleteRepair(item: Repair) {
         firebaseConnection.deleteRepair(
-            workshopId!!,
+            workshopId ?: return,
             item.repairId ?: ""
         ) { success ->
             if (success) {
@@ -169,12 +243,11 @@ class RepairFragment : Fragment() {
         }
     }
 
+    // ---------------------- Adaptador del RecyclerView ----------------------
 
-    // Adaptador para mostrar las refacciones
     private inner class RepairAdapter(private val items: List<Repair>) :
         RecyclerView.Adapter<RepairAdapter.RepairViewHolder>() {
 
-        // ViewHolder para cada tarjeta de refacción
         inner class RepairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val imgProduct: ImageView = itemView.findViewById(R.id.imgProduct)
             val tvTitle: TextView = itemView.findViewById(R.id.tvTitle)
@@ -195,7 +268,7 @@ class RepairFragment : Fragment() {
         override fun onBindViewHolder(holder: RepairViewHolder, position: Int) {
             val item = items[position]
 
-            // Carga de imagen desde Supabase
+            // Cargar imagen desde Supabase (o usar placeholder)
             if (!item.imagePath.isNullOrEmpty()) {
                 Glide.with(holder.itemView.context)
                     .load(item.imagePath)
@@ -208,17 +281,18 @@ class RepairFragment : Fragment() {
                 holder.imgProduct.setImageResource(R.drawable.noimage)
             }
 
-            // Asignación de datos al ViewHolder
+            // Mostrar datos
             holder.tvTitle.text = item.title.orEmpty()
             holder.tvBrand.text = "Marca: ${item.brand.orEmpty()}"
             holder.tvModel.text = "Modelo: ${item.model.orEmpty()}"
             holder.tvInventory.text = "En inventario: ${item.inventory.orEmpty()}"
 
-            // Acciones de editar y eliminar
+            // Acciones
             holder.ivEdit.setOnClickListener { openEditRepairActivity(item) }
             holder.ivDelete.setOnClickListener { showDeleteConfirmationDialog(item) }
         }
 
         override fun getItemCount() = items.size
     }
+
 }

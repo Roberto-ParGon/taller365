@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.repairFiles
 
 import android.net.Uri
 import android.os.Bundle
@@ -9,20 +9,25 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
 import androidx.lifecycle.lifecycleScope
-import com.bumptech.glide.Glide
+import com.uv.taller365.R
+import com.uv.taller365.database.FirebaseConnection
 import com.uv.taller365.databinding.ActivityRepairFormBinding
-import com.uv.taller365.helpers.ImageHelper
-import com.uv.taller365.helpers.uploadImageToSupabase
+import com.uv.taller365.helpers.*
 import kotlinx.coroutines.launch
 
 class RepairForm : AppCompatActivity() {
 
+    // Binding y conexión a Firebase
     private lateinit var binding: ActivityRepairFormBinding
     private lateinit var database: FirebaseConnection
+
+    // Variables de estado
     private var selectedImageUri: Uri? = null
     private var cameraImageUri: Uri? = null
     private var repairId: String? = null
     private var isLoadingVisible: Boolean = false
+
+    // ---------------------- Ciclo de vida ----------------------
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,24 +36,40 @@ class RepairForm : AppCompatActivity() {
         binding = ActivityRepairFormBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Restaurar estado si aplica
         isLoadingVisible = savedInstanceState?.getBoolean("isLoadingVisible") ?: false
         showLoading(isLoadingVisible)
 
         database = FirebaseConnection()
 
+        // Configuraciones de UI
         setupWindowInsets()
         setupToolbar()
         setupSpinner()
         setupForm()
         setupButton()
 
+        // Restaurar imagen seleccionada si aplica
         selectedImageUri = savedInstanceState?.getString("selectedImageUri")?.let { Uri.parse(it) }
-        selectedImageUri?.let { uri -> handleImageSelected(uri) }
+        selectedImageUri?.let { handleImageSelected(it) }
 
+        // Selección de imagen
         binding.imageUploadContainer.setOnClickListener {
-            showCustomOptionDialog()
+            CustomDialogHelper.showImagePickerDialog(
+                activity = this,
+                createUri = { ImageHelper.createImageUri(this) },
+                onCameraSelected = { uri ->
+                    cameraImageUri = uri
+                    takePictureLauncher.launch(uri)
+                },
+                onGallerySelected = {
+                    pickImageLauncher.launch("image/*")
+                }
+            )
         }
     }
+
+    // ---------------------- Configuración de la interfaz ----------------------
 
     private fun enableEdgeToEdge() {
         window.statusBarColor = ContextCompat.getColor(this, R.color.blue)
@@ -79,10 +100,23 @@ class RepairForm : AppCompatActivity() {
         }
     }
 
+    private fun setupButton() {
+        binding.btnGuardar.setOnClickListener {
+            if (validateForm()) {
+                if (intent.getBooleanExtra("is_edit_mode", false)) updateRepair()
+                else saveNewRepair()
+            }
+        }
+    }
+
+    // ---------------------- Manejo del formulario ----------------------
+
     private fun setupForm() {
         val isEditMode = intent.getBooleanExtra("is_edit_mode", false)
         if (isEditMode) {
             repairId = intent.getStringExtra("repair_id")
+
+            // Rellenar datos
             binding.imageText.setText("Editar imagen:")
             binding.spinnerTipo.setSelection(getTipoIndex(intent.getStringExtra("tipo") ?: ""))
             binding.editNombre.setText(intent.getStringExtra("nombre"))
@@ -90,10 +124,12 @@ class RepairForm : AppCompatActivity() {
             binding.editModelo.setText(intent.getStringExtra("modelo"))
             binding.editCantidad.setText(intent.getStringExtra("cantidad"))
 
+            // Mostrar imagen si hay
             val imageUrl = intent.getStringExtra("image_uri")
             if (!imageUrl.isNullOrBlank()) {
                 val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-                binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+                binding.imageUploadContainer.layoutParams.height =
+                    resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
                 binding.imageUploadContainer.requestLayout()
 
                 ImageHelper.loadImageFromUri(
@@ -115,11 +151,6 @@ class RepairForm : AppCompatActivity() {
         }
     }
 
-    private fun getTipoIndex(tipo: String): Int {
-        val tipos = listOf("Repuesto", "Accesorio", "Herramienta", "Otro")
-        return tipos.indexOfFirst { it.equals(tipo, ignoreCase = true) }.takeIf { it >= 0 } ?: 0
-    }
-
     private fun validateForm(): Boolean {
         with(binding) {
             if (editNombre.text.isNullOrBlank()) {
@@ -127,19 +158,16 @@ class RepairForm : AppCompatActivity() {
                 editNombre.requestFocus()
                 return false
             }
-
             if (editMarca.text.isNullOrBlank()) {
                 editMarca.error = "Ingrese la marca"
                 editMarca.requestFocus()
                 return false
             }
-
             if (editModelo.text.isNullOrBlank()) {
                 editModelo.error = "Ingrese el modelo"
                 editModelo.requestFocus()
                 return false
             }
-
             val cantidad = editCantidad.text.toString().trim().toIntOrNull()
             if (cantidad == null || cantidad <= 0) {
                 editCantidad.error = "Ingrese una cantidad válida mayor que cero"
@@ -150,45 +178,16 @@ class RepairForm : AppCompatActivity() {
         return true
     }
 
-    private fun showLoading(isLoading: Boolean) {
-        isLoadingVisible = isLoading
-
-        if (isLoading) {
-            window.setFlags(
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
-            )
-        } else {
-            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-        }
-
-        binding.loadingContainer.visibility = if (isLoading) View.VISIBLE else View.GONE
-        binding.btnGuardar.isEnabled = !isLoading
-
-        window.decorView.systemUiVisibility = if (isLoading) {
-            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-        } else {
-            View.SYSTEM_UI_FLAG_VISIBLE
-        }
-    }
-
-    private fun setupButton() {
-        binding.btnGuardar.setOnClickListener {
-            if (validateForm()) {
-                if (intent.getBooleanExtra("is_edit_mode", false)) updateRepair() else saveNewRepair()
-            }
-        }
-    }
+    // ---------------------- Guardar refacción nueva o existente ----------------------
 
     private fun saveNewRepair() {
         showLoading(true)
 
         val workshopCode = intent.getStringExtra("workshop_code") ?: run {
             showLoading(false)
-            Toast.makeText(this@RepairForm, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
             return
         }
-
 
         lifecycleScope.launch {
             val imageUrl = try {
@@ -221,17 +220,15 @@ class RepairForm : AppCompatActivity() {
                 ).show()
                 if (success) finish()
             }
-
         }
     }
 
     private fun updateRepair() {
         val workshopCode = intent.getStringExtra("workshop_code") ?: run {
             showLoading(false)
-            Toast.makeText(this@RepairForm, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
             return
         }
-
 
         val id = repairId ?: run {
             Toast.makeText(this, "ID de refacción inválido", Toast.LENGTH_SHORT).show()
@@ -263,24 +260,66 @@ class RepairForm : AppCompatActivity() {
                 ).show()
                 if (success) finish()
             }
-
         }
     }
+
+    // ---------------------- Imagen ----------------------
 
     private fun handleImageSelected(uri: Uri) {
         selectedImageUri = uri
         val radius = resources.getDimensionPixelSize(R.dimen.image_corner_radius)
-        binding.imageUploadContainer.layoutParams.height = resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
+
+        binding.imageUploadContainer.layoutParams.height =
+            resources.getDimensionPixelSize(R.dimen.image_upload_expanded_height)
         binding.imageUploadContainer.requestLayout()
         binding.imageText.setText("Editar imagen:")
 
-        ImageHelper.loadImageFromUri(this, uri, binding.imageContainerImage, binding.placeholderImage, binding.imageUploadContainer, radius)
+        ImageHelper.loadImageFromUri(
+            this, uri,
+            binding.imageContainerImage,
+            binding.placeholderImage,
+            binding.imageUploadContainer,
+            radius
+        )
     }
 
     private fun resetImagePlaceholder() {
         val defaultHeight = resources.getDimensionPixelSize(R.dimen.image_upload_default_height)
-        ImageHelper.resetImage(binding.imageUploadContainer, binding.imageContainerImage, binding.placeholderImage, defaultHeight)
+        ImageHelper.resetImage(
+            binding.imageUploadContainer,
+            binding.imageContainerImage,
+            binding.placeholderImage,
+            defaultHeight
+        )
     }
+
+    // ---------------------- Utilidades ----------------------
+
+    private fun showLoading(isLoading: Boolean) {
+        isLoadingVisible = isLoading
+
+        if (isLoading) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
+
+        binding.loadingContainer.visibility = if (isLoading) View.VISIBLE else View.GONE
+        binding.btnGuardar.isEnabled = !isLoading
+
+        window.decorView.systemUiVisibility = if (isLoading) {
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        } else {
+            View.SYSTEM_UI_FLAG_VISIBLE
+        }
+    }
+
+    private fun getTipoIndex(tipo: String): Int {
+        val tipos = listOf("Repuesto", "Accesorio", "Herramienta", "Otro")
+        return tipos.indexOfFirst { it.equals(tipo, ignoreCase = true) }.takeIf { it >= 0 } ?: 0
+    }
+
+    // ---------------------- Launchers de imagen ----------------------
 
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
         uri?.let { handleImageSelected(it) }
@@ -292,26 +331,12 @@ class RepairForm : AppCompatActivity() {
         }
     }
 
-    private fun showCustomOptionDialog() {
-        ImageHelper.showImagePickerDialog(
-            activity = this,
-            createUri = { ImageHelper.createImageUri(this) },
-            onCameraSelected = { uri ->
-                cameraImageUri = uri
-                takePictureLauncher.launch(uri)
-            },
-            onGallerySelected = {
-                pickImageLauncher.launch("image/*")
-            }
-        )
-    }
+    // ---------------------- Guardado de estado ----------------------
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        selectedImageUri?.let {
-            outState.putString("selectedImageUri", it.toString())
-        }
-        outState.putBoolean("isLoadingVisible", isLoadingVisible) // 👈 Añadir esto
+        selectedImageUri?.let { outState.putString("selectedImageUri", it.toString()) }
+        outState.putBoolean("isLoadingVisible", isLoadingVisible)
     }
 
     override fun onBackPressed() {
