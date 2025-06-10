@@ -56,5 +56,8 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:storage-kt:1.3.2")
     implementation("io.ktor:ktor-client-okhttp:2.3.5")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3")
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
+
+
 
 }

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
@@ -17,6 +18,11 @@ import androidx.core.view.WindowInsetsCompat
 import com.uv.taller365.MainActivity
 import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
+import org.json.JSONObject
+import okhttp3.*
+import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.IOException
 
 class CreateWorkshop : AppCompatActivity() {
 
@@ -93,6 +99,7 @@ class CreateWorkshop : AppCompatActivity() {
                     code = codigo
                 ) { success ->
                     if (success) {
+                        enviarCorreoCodigo(correo, nombre, codigo)
                         dialog.show()
                     } else {
                         Toast.makeText(this, "Error al registrar el taller", Toast.LENGTH_SHORT).show()
@@ -106,4 +113,43 @@ class CreateWorkshop : AppCompatActivity() {
         val chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
         return (1..8).map { chars.random() }.joinToString("")
     }
+
+    fun enviarCorreoCodigo(email: String, nombre: String, codigo: String) {
+        val json = JSONObject().apply {
+            put("service_id", "taller_365")
+            put("template_id", "Taller_365")
+            put("user_id", "SQTIFzEVAcPmKaOeT")
+            put("template_params", JSONObject().apply {
+                put("to_email", email)
+                put("nombre", nombre)
+                put("codigo_taller", codigo)
+            })
+        }
+
+        val client = OkHttpClient()
+        val mediaType = "application/json".toMediaType()
+        val body = json.toString().toRequestBody(mediaType)
+
+        val request = Request.Builder()
+            .url("https://api.emailjs.com/api/v1.0/email/send")
+            .post(body)
+            .addHeader("Content-Type", "application/json")
+            .build()
+
+        client.newCall(request).enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                Log.e("EmailJS", "Error al enviar correo", e)
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                val responseBody = response.body?.string()
+                if (response.isSuccessful) {
+                    Log.d("EmailJS", "Correo enviado con éxito: $responseBody")
+                } else {
+                    Log.e("EmailJS", "Fallo al enviar correo: ${response.code} - $responseBody")
+                }
+            }
+        })
+    }
+
 }
