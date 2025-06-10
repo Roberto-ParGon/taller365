@@ -83,7 +83,7 @@ class VehicleForm : AppCompatActivity() {
             binding.etClientName.setText(intent.getStringExtra("client_name"))
             binding.etClientPhone.setText(intent.getStringExtra("client_phone"))
             binding.btnNext.text = "Actualizar"
-            binding.btnNext.setIconResource(R.drawable.save_24px)
+            binding.btnNext.setIconResource(R.drawable.ic_save_24px)
 
         }
     }

@@ -43,7 +43,7 @@
                             android:layout_height="50dp"
                             android:background="@android:color/transparent"
                             android:contentDescription="Volver"
-                            android:src="@drawable/arrow_back_24px"
+                            android:src="@drawable/ic_arrow_back_24px"
                             app:tint="@color/white" />
 
                         <TextView
@@ -99,7 +99,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_marginBottom="16dp"
-                        android:background="@drawable/image_container_background"
+                        android:background="@drawable/bg_image_container"
                         android:clickable="true"
                         android:foreground="?android:attr/selectableItemBackground">
 
@@ -136,7 +136,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_edit_text"
                         android:spinnerMode="dropdown" />
 
                     <!-- EditText: Nombre -->
@@ -155,7 +155,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_edit_text"
                         android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese el nombre"
                         android:inputType="text"
@@ -179,7 +179,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_edit_text"
                         android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese la marca"
                         android:inputType="text"
@@ -203,7 +203,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="12dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_edit_text"
                         android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese el modelo"
                         android:inputType="text"
@@ -227,7 +227,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/edittext_background"
+                        android:background="@drawable/bg_edit_text"
                         android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese la cantidad"
                         android:inputType="number"
@@ -246,7 +246,7 @@
                         android:text="Guardar"
                         android:textColor="@color/white"
                         app:cornerRadius="10dp"
-                        app:icon="@drawable/save_24px"
+                        app:icon="@drawable/ic_save_24px"
                         app:iconGravity="textEnd"
                         app:iconTint="@color/white" />
                 </LinearLayout>

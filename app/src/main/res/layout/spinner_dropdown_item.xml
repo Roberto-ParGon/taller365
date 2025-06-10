@@ -7,4 +7,4 @@
     android:textColor="@color/black"
     android:textSize="16sp"
     android:fontFamily="@font/inter_semibold"
-    android:background="@drawable/spinner_dropdown_background" />
+    android:background="@drawable/bg_spinner_dropdown" />

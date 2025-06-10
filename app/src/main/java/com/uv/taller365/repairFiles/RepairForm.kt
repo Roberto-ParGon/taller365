@@ -145,7 +145,7 @@ class RepairForm : AppCompatActivity() {
             }
 
             binding.btnGuardar.text = "Actualizar"
-            binding.btnGuardar.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.save_24px, 0)
+            binding.btnGuardar.setCompoundDrawablesWithIntrinsicBounds(0, 0, R.drawable.ic_save_24px, 0)
         } else {
             resetImagePlaceholder()
         }

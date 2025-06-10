@@ -52,9 +52,9 @@
             android:id="@+id/btnCopiarCodigo"
             android:layout_width="24dp"
             android:layout_height="24dp"
-            android:src="@drawable/ic_copy"
             android:contentDescription="Copiar código"
             android:padding="4dp"
+            android:src="@drawable/ic_copy_24px"
             app:tint="#000000" />
     </LinearLayout>
 

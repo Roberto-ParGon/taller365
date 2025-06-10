@@ -49,8 +49,8 @@ class ClientsFragment : Fragment() {
             Glide.with(holder.itemView.context)
                 .load(vehicle.imageRes)
                 .override(100, 100)
-                .placeholder(R.drawable.noimage)
-                .error(R.drawable.noimage)
+                .placeholder(R.drawable.ic_noimage_24px)
+                .error(R.drawable.ic_noimage_24px)
                 .circleCrop()
                 .into(holder.ivVehicleImage)
 

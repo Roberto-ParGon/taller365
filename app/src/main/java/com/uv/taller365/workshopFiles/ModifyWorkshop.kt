@@ -63,7 +63,7 @@ class ModifyWorkshop : Fragment() {
             activity = requireActivity(),
             title = "Confirmar eliminación",
             message = "¿Estás seguro que deseas eliminar el taller '${workshopName}'?",
-            iconResId = R.drawable.warning,
+            iconResId = R.drawable.ic_warning_24px,
             confirmText = "Eliminar",
             cancelText = "Cancelar",
             onConfirm = { Toast.makeText(requireContext(), "Taller eliminado", Toast.LENGTH_SHORT).show() }
@@ -75,7 +75,7 @@ class ModifyWorkshop : Fragment() {
             activity = requireActivity(),
             title = "Confirmar eliminación",
             message = "¿Estás seguro que deseas eliminar al usuario '${userName}'?",
-            iconResId = R.drawable.warning,
+            iconResId = R.drawable.ic_warning_24px,
             confirmText = "Eliminar",
             cancelText = "Cancelar",
             onConfirm = { Toast.makeText(requireContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show() }

@@ -31,7 +31,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="Salir"
                 android:cropToPadding="false"
-                android:src="@drawable/logout_24px"
+                android:src="@drawable/ic_logout_24px"
                 app:tint="@color/white" />
 
             <!-- Título centrado -->
@@ -62,7 +62,7 @@
                 android:background="@android:color/transparent"
                 android:contentDescription="Añadir refaccion"
                 android:cropToPadding="false"
-                android:src="@drawable/add_repair_24px"
+                android:src="@drawable/ic_add_repair_24px"
                 app:tint="@color/white" />
 
         </LinearLayout>
@@ -85,8 +85,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/search_background"
-            android:drawableEnd="@drawable/search_24px"
+            android:background="@drawable/bg_search"
+            android:drawableEnd="@drawable/ic_search_24px"
             android:drawableTint="@color/blue"
             android:fontFamily="@font/inter_medium"
             android:hint="Buscar..."
@@ -104,7 +104,7 @@
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="TODO"
-            android:src="@drawable/tune_24px"
+            android:src="@drawable/ic_tune_24px"
             app:tint="@color/blue" />
 
     </LinearLayout>

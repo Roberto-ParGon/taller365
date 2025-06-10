@@ -31,7 +31,7 @@
                     android:layout_height="50dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="Volver"
-                    android:src="@drawable/outline_arrow_back_24"
+                    android:src="@drawable/ic_arrow_back_24px"
                     app:tint="@color/white" />
 
                 <TextView
@@ -79,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginBottom="20dp"
-                        android:background="@drawable/image_container_background">
+                        android:background="@drawable/bg_image_container">
 
                         <ImageView
                             android:id="@+id/placeholderImage"
