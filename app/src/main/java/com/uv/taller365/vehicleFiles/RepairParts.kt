@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.vehicleFiles
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.google.android.material.button.MaterialButton
+import com.uv.taller365.R
 
 class RepairParts : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

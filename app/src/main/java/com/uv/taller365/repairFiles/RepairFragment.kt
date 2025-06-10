@@ -216,12 +216,11 @@ class RepairFragment : Fragment() {
     // ---------------------- Eliminación ----------------------
 
     private fun showDeleteConfirmationDialog(item: Repair) {
-
         CustomDialogHelper.showConfirmationDialog(
             activity = requireActivity(),
             title = "Confirmar eliminación",
             message = "¿Estás seguro que deseas eliminar la refacción '${item.title}'?",
-            iconResId = R.drawable.warning,
+            iconResId = R.drawable.ic_warning_24px,
             confirmText = "Eliminar",
             cancelText = "Cancelar",
             onConfirm = { deleteRepair(item) }
@@ -273,12 +272,12 @@ class RepairFragment : Fragment() {
                 Glide.with(holder.itemView.context)
                     .load(item.imagePath)
                     .override(100, 100)
-                    .placeholder(R.drawable.noimage)
-                    .error(R.drawable.noimage)
+                    .placeholder(R.drawable.ic_noimage_24px)
+                    .error(R.drawable.ic_noimage_24px)
                     .circleCrop()
                     .into(holder.imgProduct)
             } else {
-                holder.imgProduct.setImageResource(R.drawable.noimage)
+                holder.imgProduct.setImageResource(R.drawable.ic_noimage_24px)
             }
 
             // Mostrar datos

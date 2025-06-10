@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/vehiclesNav"
-        android:icon="@drawable/baseline_directions_car_24"
+        android:icon="@drawable/ic_car_24px"
         android:title="Vehículos"  />
     <item
         android:id="@+id/repaisNav"
-        android:icon="@drawable/build_24px"
+        android:icon="@drawable/ic_repair_24px"
         android:title="Refacciones" />
     <item
         android:id="@+id/clientsNav"
-        android:icon="@drawable/groups_24px"
+        android:icon="@drawable/ic_groups_24px"
         android:title="Clientes" />
     <item
         android:id="@+id/configNav"
-        android:icon="@drawable/settings_24px"
+        android:icon="@drawable/ic_settings_24px"
         android:title="Configuracion" />
 </menu>

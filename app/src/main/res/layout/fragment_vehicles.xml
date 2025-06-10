@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".VehiclesFragment">
+    tools:context=".vehicleFiles.VehiclesFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -30,7 +30,7 @@
                     android:layout_height="50dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="Salir"
-                    android:src="@drawable/logout_24px"
+                    android:src="@drawable/ic_logout_24px"
                     app:tint="@color/white" />
 
                 <LinearLayout
@@ -65,7 +65,7 @@
                     android:layout_height="50dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="Ajustes"
-                    android:src="@drawable/settings_24px"
+                    android:src="@drawable/ic_settings_24px"
                     android:visibility="invisible"
                     app:tint="@color/white" />
 
@@ -89,8 +89,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@drawable/search_background"
-            android:drawableEnd="@drawable/search_24px"
+            android:background="@drawable/bg_search"
+            android:drawableEnd="@drawable/ic_search_24px"
             android:drawableTint="@color/blue"
             android:hint="Buscar..."
             android:maxLines="1"
@@ -107,7 +107,7 @@
             android:layout_marginStart="8dp"
             android:background="@android:color/transparent"
             android:contentDescription="TODO"
-            android:src="@drawable/tune_24px"
+            android:src="@drawable/ic_tune_24px"
             app:tint="@color/blue" />
 
     </LinearLayout>
@@ -140,7 +140,7 @@
         android:layout_marginBottom="15dp"
         android:backgroundTint="@color/green"
         android:contentDescription="TODO"
-        android:src="@drawable/add_24px"
+        android:src="@drawable/ic_add_24px"
         app:maxImageSize="32dp"
         app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.FAB.Circle"
         app:tint="@color/white" />

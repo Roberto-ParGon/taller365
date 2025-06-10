@@ -5,7 +5,6 @@ import android.net.Uri
 import android.provider.MediaStore
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.MultiTransformation
 import com.bumptech.glide.load.resource.bitmap.*
@@ -38,7 +37,7 @@ object ImageHelper {
         container: View,
         radius: Int
     ) {
-        placeholder.setImageResource(R.drawable.ic_edit_24px)
+        placeholder.setImageResource(R.drawable.ic_edit_image_24px)
         imageView.visibility = View.VISIBLE
         container.alpha = 0.7f
 
@@ -61,7 +60,7 @@ object ImageHelper {
         placeholder: ImageView,
         container: View
     ) {
-        placeholder.setImageResource(R.drawable.ic_edit_24px)
+        placeholder.setImageResource(R.drawable.ic_edit_image_24px)
         imageView.visibility = View.VISIBLE
         imageView.setImageResource(resId)
         container.alpha = 0.7f

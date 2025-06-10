@@ -15,7 +15,7 @@ object CustomDialogHelper {
 
     fun showImagePickerDialog(
         activity: Activity,
-        iconResId: Int = R.drawable.camara,
+        iconResId: Int = R.drawable.ic_camera_24px,
         onCameraSelected: (Uri) -> Unit,
         onGallerySelected: () -> Unit,
         createUri: () -> Uri?
@@ -64,7 +64,7 @@ object CustomDialogHelper {
         activity: Activity,
         title: String,
         message: String,
-        iconResId: Int = R.drawable.warning,
+        iconResId: Int = R.drawable.ic_warning_24px,
         confirmText: String = "Aceptar",
         cancelText: String = "Cancelar",
         onConfirm: () -> Unit,
@@ -101,6 +101,7 @@ object CustomDialogHelper {
         iconView.setImageResource(iconResId)
 
         acceptButton.text = confirmText
+        acceptButton.setBackgroundColor(ContextCompat.getColor(activity, R.color.red))
         cancelButton.text = cancelText
 
         acceptButton.setOnClickListener {

@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.workshopFiles
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -6,11 +6,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import androidx.appcompat.app.AlertDialog
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import com.google.android.material.button.MaterialButton
+import com.uv.taller365.R
+import com.uv.taller365.helpers.CustomDialogHelper
 
 class ModifyWorkshop : Fragment() {
 
@@ -58,40 +59,26 @@ class ModifyWorkshop : Fragment() {
     }
 
     private fun showDeleteWorkshopDialog(workshopName: String) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete_workshop, null)
-        val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
-
-        dialogView.findViewById<TextView>(R.id.tvMessage).text =
-            "¿Estás seguro que deseas eliminar el taller \"$workshopName\"?"
-
-        dialogView.findViewById<Button>(R.id.btnCancel).setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialogView.findViewById<Button>(R.id.btnDelete).setOnClickListener {
-            Toast.makeText(requireContext(), "Taller eliminado", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        CustomDialogHelper.showConfirmationDialog(
+            activity = requireActivity(),
+            title = "Confirmar eliminación",
+            message = "¿Estás seguro que deseas eliminar el taller '${workshopName}'?",
+            iconResId = R.drawable.ic_warning_24px,
+            confirmText = "Eliminar",
+            cancelText = "Cancelar",
+            onConfirm = { Toast.makeText(requireContext(), "Taller eliminado", Toast.LENGTH_SHORT).show() }
+        )
     }
 
     private fun showDeleteUserDialog(userName: String) {
-        val dialogView = layoutInflater.inflate(R.layout.dialog_confirm_delete_user, null)
-        val dialog = AlertDialog.Builder(requireContext()).setView(dialogView).create()
-
-        dialogView.findViewById<TextView>(R.id.tvMessage).text =
-            "¿Estás seguro que deseas eliminar al usuario \"$userName\"?"
-
-        dialogView.findViewById<Button>(R.id.btnCancel).setOnClickListener {
-            dialog.dismiss()
-        }
-
-        dialogView.findViewById<Button>(R.id.btnDelete).setOnClickListener {
-            Toast.makeText(requireContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show()
-            dialog.dismiss()
-        }
-
-        dialog.show()
+        CustomDialogHelper.showConfirmationDialog(
+            activity = requireActivity(),
+            title = "Confirmar eliminación",
+            message = "¿Estás seguro que deseas eliminar al usuario '${userName}'?",
+            iconResId = R.drawable.ic_warning_24px,
+            confirmText = "Eliminar",
+            cancelText = "Cancelar",
+            onConfirm = { Toast.makeText(requireContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show() }
+        )
     }
 }

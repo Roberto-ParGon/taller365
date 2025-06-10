@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.vehicleFiles
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
+import com.uv.taller365.R
 import com.uv.taller365.databinding.ActivityVehicleFormBinding
 import com.uv.taller365.helpers.*
 import java.text.SimpleDateFormat
@@ -82,7 +83,7 @@ class VehicleForm : AppCompatActivity() {
             binding.etClientName.setText(intent.getStringExtra("client_name"))
             binding.etClientPhone.setText(intent.getStringExtra("client_phone"))
             binding.btnNext.text = "Actualizar"
-            binding.btnNext.setIconResource(R.drawable.save_24px)
+            binding.btnNext.setIconResource(R.drawable.ic_save_24px)
 
         }
     }

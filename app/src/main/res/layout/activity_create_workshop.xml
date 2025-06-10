@@ -35,7 +35,7 @@
                         android:layout_height="50dp"
                         android:background="@android:color/transparent"
                         android:contentDescription="Volver"
-                        android:src="@drawable/outline_arrow_back_24"
+                        android:src="@drawable/ic_arrow_back_24px"
                         app:tint="@color/white" />
 
                     <TextView
@@ -82,7 +82,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/bg_edit_text"
                     android:hint="Ingrese el nombre del taller"
                     android:inputType="text"
                     android:textColor="@color/black"
@@ -103,7 +103,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/bg_edit_text"
                     android:hint="Ingrese la dirección del taller"
                     android:inputType="text"
                     android:textColor="@color/black"
@@ -124,7 +124,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/bg_edit_text"
                     android:hint="Ingrese el telefono del taller"
                     android:inputType="phone"
                     android:textColor="@color/black"
@@ -146,7 +146,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
-                    android:background="@drawable/edittext_background"
+                    android:background="@drawable/bg_edit_text"
                     android:hint="Ingrese el correo del taller"
                     android:inputType="textEmailAddress"
                     android:textColor="@color/black"
@@ -162,7 +162,7 @@
                     android:text="Crear Taller"
                     android:textColor="#FFFFFF"
                     app:cornerRadius="10dp"
-                    app:icon="@drawable/save_24px"
+                    app:icon="@drawable/ic_save_24px"
                     app:iconTint="@color/white"
                     app:iconGravity="textEnd" />
             </LinearLayout>

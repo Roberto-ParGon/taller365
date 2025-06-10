@@ -4,7 +4,10 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
+import com.uv.taller365.clientFiles.ClientsFragment
 import com.uv.taller365.repairFiles.RepairFragment
+import com.uv.taller365.vehicleFiles.VehiclesFragment
+import com.uv.taller365.workshopFiles.ModifyWorkshop
 
 class FragmentStateAdapter(
     fragmentActivity: FragmentActivity,
