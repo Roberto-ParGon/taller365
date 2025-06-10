@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.vehicleFiles
 
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -10,6 +10,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.*
+import com.uv.taller365.R
 import com.uv.taller365.databinding.ActivityVehicleFormBinding
 import com.uv.taller365.helpers.*
 import java.text.SimpleDateFormat

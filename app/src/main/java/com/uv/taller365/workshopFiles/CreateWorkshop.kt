@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.workshopFiles
 
 import android.content.Intent
 import android.content.ClipData
@@ -14,6 +14,8 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.uv.taller365.MainActivity
+import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
 
 class CreateWorkshop : AppCompatActivity() {

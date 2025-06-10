@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.vehicleFiles
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.uv.taller365.R
 import java.text.SimpleDateFormat
 import java.util.*
 

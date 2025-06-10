@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.workshopFiles
 
 data class Workshop(
     val id: String? = null,

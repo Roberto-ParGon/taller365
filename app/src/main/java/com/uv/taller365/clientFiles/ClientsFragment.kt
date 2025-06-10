@@ -1,4 +1,4 @@
-package com.uv.taller365
+package com.uv.taller365.clientFiles
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -15,7 +15,12 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.uv.taller365.R
+import com.uv.taller365.vehicleFiles.Vehicle
+import com.uv.taller365.vehicleFiles.VehicleRepository
+import com.uv.taller365.client.ClientForm
 
 class ClientsFragment : Fragment() {
 
@@ -41,7 +46,14 @@ class ClientsFragment : Fragment() {
         override fun onBindViewHolder(holder: ClienteViewHolder, position: Int) {
             val vehicle = vehicles[position]
 
-            holder.ivVehicleImage.setImageResource(vehicle.imageRes)
+            Glide.with(holder.itemView.context)
+                .load(vehicle.imageRes)
+                .override(100, 100)
+                .placeholder(R.drawable.noimage)
+                .error(R.drawable.noimage)
+                .circleCrop()
+                .into(holder.ivVehicleImage)
+
             holder.tvVehicleName.text = vehicle.name
             holder.tvBrand.text = "Marca: ${vehicle.brand}"
             holder.tvClientName.text = "Nombre del cliente: ${vehicle.clientName}"

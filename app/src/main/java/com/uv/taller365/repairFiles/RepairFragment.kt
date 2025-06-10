@@ -216,7 +216,6 @@ class RepairFragment : Fragment() {
     // ---------------------- Eliminación ----------------------
 
     private fun showDeleteConfirmationDialog(item: Repair) {
-
         CustomDialogHelper.showConfirmationDialog(
             activity = requireActivity(),
             title = "Confirmar eliminación",

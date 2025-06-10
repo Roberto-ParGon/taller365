@@ -101,6 +101,7 @@ object CustomDialogHelper {
         iconView.setImageResource(iconResId)
 
         acceptButton.text = confirmText
+        acceptButton.setBackgroundColor(ContextCompat.getColor(activity, R.color.red))
         cancelButton.text = cancelText
 
         acceptButton.setOnClickListener {
