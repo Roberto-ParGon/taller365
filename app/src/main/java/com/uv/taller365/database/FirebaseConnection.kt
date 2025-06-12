@@ -8,6 +8,8 @@ class FirebaseConnection {
 
     private val database = FirebaseDatabase.getInstance().reference
 
+    // ---------------------- REPAIR: CRUD de refacciones ----------------------
+
     fun writeNewRepair(
         workshopCode: String,
         repairType: String,
@@ -18,10 +20,7 @@ class FirebaseConnection {
         imagePath: String?,
         onComplete: (Boolean) -> Unit
     ) {
-        val db = FirebaseDatabase.getInstance().getReference("workshops")
-            .child(workshopCode)
-            .child("repairs")
-
+        val db = database.child("workshops").child(workshopCode).child("repairs")
         val id = db.push().key ?: run {
             onComplete(false)
             return
@@ -33,8 +32,6 @@ class FirebaseConnection {
             .addOnFailureListener { onComplete(false) }
     }
 
-
-    /* Obtener refacciones del taller */
     fun fetchRepairs(
         workshopId: String,
         onResult: (List<Repair>) -> Unit,
@@ -45,8 +42,7 @@ class FirebaseConnection {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val repairs = mutableListOf<Repair>()
                 for (child in snapshot.children) {
-                    val repair = child.getValue(Repair::class.java)
-                    repair?.let { repairs.add(it) }
+                    child.getValue(Repair::class.java)?.let { repairs.add(it) }
                 }
                 onResult(repairs)
             }
@@ -68,10 +64,9 @@ class FirebaseConnection {
         imagePath: String?,
         onComplete: (Boolean) -> Unit
     ) {
-        val db = database.child("workshops").child(workshopId).child("repairs").child(repairId)
         val updatedRepair = Repair(repairId, repairType, title, brand, model, inventory, imagePath)
-
-        db.setValue(updatedRepair)
+        database.child("workshops").child(workshopId).child("repairs").child(repairId)
+            .setValue(updatedRepair)
             .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { onComplete(false) }
     }
@@ -81,13 +76,14 @@ class FirebaseConnection {
         repairId: String,
         onComplete: (Boolean) -> Unit
     ) {
-        val db = database.child("workshops").child(workshopId).child("repairs").child(repairId)
-        db.removeValue()
+        database.child("workshops").child(workshopId).child("repairs").child(repairId)
+            .removeValue()
             .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { onComplete(false) }
     }
 
-    /* Crear un nuevo taller */
+    // ---------------------- WORKSHOP: Crear, actualizar y eliminar taller ----------------------
+
     fun writeNewWorkshop(
         name: String,
         address: String,
@@ -96,10 +92,130 @@ class FirebaseConnection {
         code: String,
         onComplete: (Boolean) -> Unit
     ) {
-        val db = FirebaseDatabase.getInstance().getReference("workshops").child(code)
-        val workshop = Workshop(code, name, address, phone, email, code)
-        db.child("info").setValue(workshop)
+        val db = database.child("workshops").child(code)
+        val data = mapOf(
+            "name" to name,
+            "address" to address,
+            "phone" to phone,
+            "email" to email,
+            "code" to code,
+            "activo" to true,
+            "admin" to email
+        )
+
+        db.child("info").setValue(data)
             .addOnSuccessListener { onComplete(true) }
             .addOnFailureListener { onComplete(false) }
+    }
+
+    fun updateWorkshop(
+        workshopId: String,
+        data: Map<String, Any>,
+        onComplete: (Boolean) -> Unit
+    ) {
+        database.child("workshops").child(workshopId).child("info")
+            .updateChildren(data)
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+    fun updateWorkshopInfo(
+        code: String,
+        name: String,
+        address: String,
+        phone: String,
+        email: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val data = mapOf(
+            "name" to name,
+            "address" to address,
+            "phone" to phone,
+            "email" to email,
+            "admin" to email
+        )
+
+        database.child("workshops").child(code).child("info")
+            .updateChildren(data)
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+    fun deleteWorkshop(
+        workshopId: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        database.child("workshops").child(workshopId)
+            .removeValue()
+            .addOnSuccessListener { onComplete(true) }
+            .addOnFailureListener { onComplete(false) }
+    }
+
+    fun fetchWorkshop(
+        code: String,
+        onResult: (Workshop?) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        database.child("workshops").child(code).child("info")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val workshop = snapshot.getValue(Workshop::class.java)
+                    onResult(workshop)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onError(error.toException())
+                }
+            })
+    }
+
+    // ---------------------- USUARIOS: listar y eliminar ----------------------
+
+    fun fetchUsuarios(
+        workshopId: String,
+        onResult: (List<String>) -> Unit,
+        onError: (Exception) -> Unit
+    ) {
+        database.child("workshops").child(workshopId).child("usuarios")
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val usuarios = mutableListOf<String>()
+                    for (child in snapshot.children) {
+                        child.child("nombre").getValue(String::class.java)?.let { usuarios.add(it) }
+                    }
+                    onResult(usuarios)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    onError(error.toException())
+                }
+            })
+    }
+
+    fun deleteUsuario(
+        workshopId: String,
+        nombre: String,
+        onComplete: (Boolean) -> Unit
+    ) {
+        val usuariosRef = database.child("workshops").child(workshopId).child("usuarios")
+
+        usuariosRef.get()
+            .addOnSuccessListener { snapshot ->
+                var eliminado = false
+                for (child in snapshot.children) {
+                    val nombreDb = child.child("nombre").getValue(String::class.java)
+                    if (nombreDb == nombre) {
+                        child.ref.removeValue().addOnCompleteListener {
+                            onComplete(it.isSuccessful)
+                        }
+                        eliminado = true
+                        break
+                    }
+                }
+                if (!eliminado) onComplete(false)
+            }
+            .addOnFailureListener {
+                onComplete(false)
+            }
     }
 }
