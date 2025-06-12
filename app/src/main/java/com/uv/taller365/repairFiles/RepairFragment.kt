@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.*
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
 import com.uv.taller365.helpers.*
@@ -169,11 +171,13 @@ class RepairFragment : Fragment() {
             },
             onError = { exception ->
                 loadingContainer.visibility = View.GONE
-                Toast.makeText(
-                    context,
-                    "Error al cargar refacciones: ${exception.message}",
-                    Toast.LENGTH_SHORT
-                ).show()
+                CustomDialogHelper.showInfoDialog(
+                    activity = requireActivity(),
+                    title = "Error",
+                    message = "Error al cargar refacciones: ${exception.message}",
+                    iconResId = R.drawable.ic_error_24px,
+                    buttonText = "Entendido"
+                )
             }
         )
     }
@@ -182,7 +186,13 @@ class RepairFragment : Fragment() {
 
     private fun navigateToRepairRegistration() {
         if (workshopId.isNullOrEmpty()) {
-            Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = requireActivity(),
+                title = "Error",
+                message = "ID del taller no disponible",
+                iconResId = R.drawable.ic_error_24px,
+                buttonText = "Entendido"
+            )
             return
         }
 
@@ -195,7 +205,13 @@ class RepairFragment : Fragment() {
 
     private fun openEditRepairActivity(item: Repair) {
         if (workshopId.isNullOrEmpty()) {
-            Toast.makeText(context, "ID del taller no disponible", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = requireActivity(),
+                title = "Error",
+                message = "ID del taller no disponible",
+                iconResId = R.drawable.ic_error_24px,
+                buttonText = "Entendido"
+            )
             return
         }
 
@@ -233,11 +249,24 @@ class RepairFragment : Fragment() {
             item.repairId ?: ""
         ) { success ->
             if (success) {
-                Toast.makeText(context, "Refacción '${item.title}' eliminada", Toast.LENGTH_SHORT).show()
+                CustomDialogHelper.showInfoDialog(
+                    activity = requireActivity(),
+                    title = "Refacción eliminada",
+                    message = "Refacción '${item.title}' eliminada correctamente.",
+                    iconResId = R.drawable.ic_success_24px,
+                    buttonText = "Aceptar"
+                )
                 repairsList.remove(item)
+                allRepairsList.remove(item)
                 adapter.notifyDataSetChanged()
             } else {
-                Toast.makeText(context, "Error al eliminar la refacción", Toast.LENGTH_SHORT).show()
+                CustomDialogHelper.showInfoDialog(
+                    activity = requireActivity(),
+                    title = "Error",
+                    message = "Error al eliminar la refacción.",
+                    iconResId = R.drawable.ic_error_24px,
+                    buttonText = "Entendido"
+                )
             }
         }
     }
@@ -287,11 +316,49 @@ class RepairFragment : Fragment() {
             holder.tvInventory.text = "En inventario: ${item.inventory.orEmpty()}"
 
             // Acciones
+            holder.itemView.setOnClickListener { showRepairDetailDialog(item) }
             holder.ivEdit.setOnClickListener { openEditRepairActivity(item) }
             holder.ivDelete.setOnClickListener { showDeleteConfirmationDialog(item) }
         }
 
         override fun getItemCount() = items.size
+    }
+
+    private fun showRepairDetailDialog(repair: Repair) {
+        val view = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_repair_details, null)
+        val dialog = android.app.Dialog(requireContext()).apply {
+            setContentView(view)
+            setCancelable(true)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+        }
+
+        val image = view.findViewById<ImageView>(R.id.imageDetail)
+        val title = view.findViewById<TextView>(R.id.titleDetail)
+        val brand = view.findViewById<TextView>(R.id.brandDetail)
+        val model = view.findViewById<TextView>(R.id.modelDetail)
+        val type = view.findViewById<TextView>(R.id.typeDetail)
+        val inventory = view.findViewById<TextView>(R.id.inventoryDetail)
+        val btnClose = view.findViewById<Button>(R.id.btnCloseDetail)
+
+        Glide.with(requireContext())
+            .load(repair.imagePath)
+            .apply(RequestOptions.bitmapTransform(RoundedCorners(40))) // puedes ajustar el valor del radio
+            .placeholder(R.drawable.ic_noimage_24px)
+            .error(R.drawable.ic_noimage_24px)
+            .into(image)
+
+        title.text = repair.title
+        brand.text = "Marca: ${repair.brand}"
+        model.text = "Modelo: ${repair.model}"
+        type.text = "Tipo: ${repair.repairType}"
+        inventory.text = "Inventario: ${repair.inventory}"
+
+        btnClose.setOnClickListener { dialog.dismiss() }
+
+        val width = (resources.displayMetrics.widthPixels * 0.90).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+
+        dialog.show()
     }
 
 }

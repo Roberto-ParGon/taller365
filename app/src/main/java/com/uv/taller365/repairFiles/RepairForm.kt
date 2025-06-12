@@ -185,7 +185,15 @@ class RepairForm : AppCompatActivity() {
 
         val workshopCode = intent.getStringExtra("workshop_code") ?: run {
             showLoading(false)
-            Toast.makeText(this, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = this@RepairForm,
+                title = "Error",
+                message = "Código del taller no proporcionado",
+                iconResId = R.drawable.ic_error_24px,
+                buttonText = "Entendido"
+            ) {
+                finish()
+            }
             return
         }
 
@@ -199,7 +207,14 @@ class RepairForm : AppCompatActivity() {
 
             if (imageUrl == null) {
                 showLoading(false)
-                Toast.makeText(this@RepairForm, "Error al subir imagen", Toast.LENGTH_LONG).show()
+                CustomDialogHelper.showInfoDialog(
+                    activity = this@RepairForm,
+                    title = "Error",
+                    message = "Ocurrió un error al subir la imagen. Intenta nuevamente.",
+                    iconResId = R.drawable.ic_error_24px,
+                    buttonText = "Entendido"
+                ) {
+                }
                 return@launch
             }
 
@@ -213,12 +228,15 @@ class RepairForm : AppCompatActivity() {
                 imageUrl
             ) { success ->
                 showLoading(false)
-                Toast.makeText(
-                    this@RepairForm,
-                    if (success) "Refacción guardada exitosamente" else "Error al guardar la refacción",
-                    Toast.LENGTH_SHORT
-                ).show()
-                if (success) finish()
+                CustomDialogHelper.showInfoDialog(
+                    activity = this@RepairForm,
+                    title = if (success) "Éxito" else "Error",
+                    message = if (success) "Refacción guardada exitosamente" else "Error al guardar la refacción",
+                    iconResId = if (success) R.drawable.ic_success_24px else R.drawable.ic_error_24px,
+                    buttonText = "Aceptar"
+                ){
+                    if (success) finish()
+                }
             }
         }
     }
@@ -226,12 +244,28 @@ class RepairForm : AppCompatActivity() {
     private fun updateRepair() {
         val workshopCode = intent.getStringExtra("workshop_code") ?: run {
             showLoading(false)
-            Toast.makeText(this, "Código del taller no proporcionado", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = this@RepairForm,
+                title = "Error",
+                message = "Código del taller no proporcionado",
+                iconResId = R.drawable.ic_error_24px,
+                buttonText = "Entendido"
+            ) {
+                finish()
+            }
             return
         }
 
         val id = repairId ?: run {
-            Toast.makeText(this, "ID de refacción inválido", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = this@RepairForm,
+                title = "Error",
+                message = "ID de refacción inválido",
+                iconResId = R.drawable.ic_error_24px,
+                buttonText = "Entendido"
+            ) {
+                finish()
+            }
             return
         }
 
@@ -253,12 +287,15 @@ class RepairForm : AppCompatActivity() {
                 imageUrl
             ) { success ->
                 showLoading(false)
-                Toast.makeText(
-                    this@RepairForm,
-                    if (success) "Refacción actualizada exitosamente" else "Error al actualizar la refacción",
-                    Toast.LENGTH_SHORT
-                ).show()
-                if (success) finish()
+                CustomDialogHelper.showInfoDialog(
+                    activity = this@RepairForm,
+                    title = if (success) "Éxito" else "Error",
+                    message = if (success) "Refacción actualizada exitosamente" else "Error al actualizar la refacción",
+                    iconResId = if (success) R.drawable.ic_success_24px else R.drawable.ic_error_24px,
+                    buttonText = "Aceptar"
+                ){
+                    if (success) finish()
+                }
             }
         }
     }

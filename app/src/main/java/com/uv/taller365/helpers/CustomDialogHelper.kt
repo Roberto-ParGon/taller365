@@ -119,6 +119,45 @@ object CustomDialogHelper {
         dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
     }
 
+    fun showInfoDialog(
+        activity: Activity,
+        title: String,
+        message: String,
+        iconResId: Int = R.drawable.ic_warning_24px,
+        buttonText: String = "Aceptar",
+        onAccept: (() -> Unit)? = null
+    ) {
+        val view = LayoutInflater.from(activity).inflate(R.layout.dialog_custom_alert, null)
+        val dialog = Dialog(activity).apply {
+            setContentView(view)
+            setCancelable(true)
+            window?.setBackgroundDrawableResource(android.R.color.transparent)
+        }
+
+        val titleView = view.findViewById<TextView>(R.id.dialogTitle)
+        val messageView = view.findViewById<TextView>(R.id.dialogMessage)
+        val iconView = view.findViewById<ImageView>(R.id.dialogIcon)
+        val acceptButton = view.findViewById<Button>(R.id.dialogAcceptButton)
+        val cancelButton = view.findViewById<Button>(R.id.dialogCancelButton)
+
+        titleView.text = title
+        messageView.text = message
+        messageView.visibility = View.VISIBLE
+        iconView.setImageResource(iconResId)
+
+        acceptButton.text = buttonText
+        cancelButton.visibility = View.GONE
+
+        acceptButton.setOnClickListener {
+            dialog.dismiss()
+            onAccept?.invoke()
+        }
+
+        dialog.show()
+        val width = (activity.resources.displayMetrics.widthPixels * 0.85).toInt()
+        dialog.window?.setLayout(width, WindowManager.LayoutParams.WRAP_CONTENT)
+    }
+
     fun showFilterDialog(
         activity: Activity,
         tipos: List<String>,
