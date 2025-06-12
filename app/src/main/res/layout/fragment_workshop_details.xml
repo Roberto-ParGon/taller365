@@ -1,236 +1,264 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FAFBFD">
 
-    <LinearLayout
+    <!-- Toolbar fijo arriba -->
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:theme="@style/NoToolBar">
 
-        <!-- AppBar -->
-        <com.google.android.material.appbar.AppBarLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingStart="-20dp"
+            android:weightSum="3">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/toolbar"
+            <ImageButton
+                android:id="@+id/btnLogout"
+                android:layout_width="0dp"
+                android:layout_height="50dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_logout_24px"
+                app:tint="@color/white"
+                android:contentDescription="Salir" />
+
+            <LinearLayout
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/configuration"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:fontFamily="@font/inter_semibold" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.appcompat.widget.Toolbar>
+
+    <!-- Contenido scrollable debajo del toolbar -->
+    <ScrollView
+        android:id="@+id/scrollViewContent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:layout_above="@id/bottomSpace3"
+        android:fillViewport="true"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
+
+            <!-- Aquí insertas el mismo contenido del CardView original -->
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="?attr/actionBarSize"
-                android:background="@color/blue"
-                android:theme="@style/NoToolBar">
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="6dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal">
+                    android:orientation="vertical"
+                    android:padding="20dp"
+                    android:background="@android:color/white">
 
-                    <ImageButton
-                        android:id="@+id/btnBack"
-                        android:layout_width="50dp"
-                        android:layout_height="50dp"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Volver"
-                        android:src="@drawable/ic_arrow_back_24px"
-                        app:tint="@color/white" />
-
+                    <!-- Nombre -->
                     <TextView
-                        android:id="@+id/tvTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="60dp"
-                        android:text="Editar taller"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
-                </LinearLayout>
-            </androidx.appcompat.widget.Toolbar>
-        </com.google.android.material.appbar.AppBarLayout>
+                        android:text="Nombre del taller:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
-        <!-- CardView -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="24dp"
-            android:background="@android:color/transparent"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="6dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="20dp"
-                android:background="@android:color/white">
-
-                <!-- FrameLayout opcional (imagen o ícono del taller) -->
-
-                <!-- Nombre -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre del taller:"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/etWorkshopName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese el nombre del taller"
-                        android:textColorHint="@color/gray" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
 
-                <!-- Dirección -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dirección:"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    <!-- Dirección -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dirección:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/etWorkshopAddress"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese la dirección"
-                        android:textColorHint="@color/gray" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:inputType="text"
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
 
-                <!-- Teléfono -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Teléfono:"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    <!-- Teléfono -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Teléfono:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/etPhone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese el teléfono"
                         android:inputType="phone"
-                        android:textColorHint="@color/gray" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
 
-                <!-- Correo -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Correo electrónico:"
-                    android:textColor="@color/black"
-                    android:textStyle="bold"
-                    android:textSize="16sp" />
+                    <!-- Correo electrónico -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Correo electrónico:"
+                        android:textColor="@color/black"
+                        android:textStyle="bold"
+                        android:textSize="16sp" />
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp">
-
-                    <com.google.android.material.textfield.TextInputEditText
+                    <EditText
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:background="@drawable/bg_edit_text"
+                        android:fontFamily="@font/inter_medium"
                         android:hint="Ingrese el correo"
                         android:inputType="textEmailAddress"
-                        android:textColorHint="@color/gray" />
-                </com.google.android.material.textfield.TextInputLayout>
+                        android:textColor="@color/black"
+                        android:textColorHint="#888888"
+                        android:textSize="16sp" />
 
-                <!-- Lista de mecánicos -->
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Mecánicos del taller:"
-                    android:textColor="@color/black"
-                    android:textSize="16sp"
-                    android:textStyle="bold"
-                    android:layout_marginBottom="12dp" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:gravity="center_vertical"
-                    android:layout_marginBottom="16dp">
-
-                    <ImageView
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_marginEnd="12dp"
-                        android:contentDescription="Icono usuario"
-                        android:src="@drawable/ic_user_24px" />
-
+                    <!-- Lista de mecánicos -->
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Nombre del mecánico"
+                        android:text="Mecánicos del taller:"
+                        android:textColor="@color/black"
                         android:textSize="16sp"
-                        android:textColor="@color/black" />
+                        android:textStyle="bold"
+                        android:layout_marginBottom="12dp" />
 
-                    <ImageButton
-                        android:id="@+id/btnDeleteUser"
-                        android:layout_width="wrap_content"
+                    <ScrollView
+                        android:id="@+id/scrollUsuarios"
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        android:layout_marginBottom="12dp"
+                        android:fillViewport="false"
+                        android:nestedScrollingEnabled="true"
+                        android:overScrollMode="ifContentScrolls">
+
+                        <LinearLayout
+                            android:id="@+id/containerUsuarios"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"
+                            android:paddingBottom="6dp" />
+                    </ScrollView>
+
+                    <!-- Botones -->
+                    <Button
+                        android:id="@+id/btnDeleteWorkshop"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@android:color/transparent"
-                        android:contentDescription="Eliminar mecánico"
-                        android:src="@drawable/ic_delete_24px"
-                        app:tint="@color/red" />
+                        android:layout_marginBottom="12dp"
+                        android:backgroundTint="@color/red"
+                        android:text="Eliminar taller"
+                        android:textColor="@android:color/white"
+                        app:icon="@drawable/ic_delete_24px"
+                        app:iconTint="@android:color/white"
+                        app:cornerRadius="10dp"
+                        app:iconGravity="textStart" />
+
+                    <Button
+                        android:id="@+id/btnSaveWorkshop"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/green"
+                        android:text="Guardar cambios"
+                        android:textColor="@android:color/white"
+                        app:icon="@drawable/ic_save_24px"
+                        app:iconTint="@android:color/white"
+                        app:cornerRadius="10dp"
+                        app:iconGravity="textStart" />
+
                 </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
 
-                <!-- Botones -->
-                <Button
-                    android:id="@+id/btnDeleteWorkshop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:backgroundTint="@color/red"
-                    android:text="Eliminar taller"
-                    android:textColor="@android:color/white"
-                    app:icon="@drawable/ic_delete_24px"
-                    app:iconTint="@android:color/white"
-                    app:cornerRadius="10dp"
-                    app:iconGravity="textStart" />
+    <!-- Fijo en la parte inferior -->
+    <View
+        android:id="@+id/bottomSpace3"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/white" />
 
-                <Button
-                    android:id="@+id/btnSaveWorkshop"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/green"
-                    android:text="Guardar cambios"
-                    android:textColor="@android:color/white"
-                    app:icon="@drawable/ic_save_24px"
-                    app:iconTint="@android:color/white"
-                    app:cornerRadius="10dp"
-                    app:iconGravity="textStart" />
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
+    <LinearLayout
+        android:id="@+id/loadingContainer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBarLoading"
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:indeterminateTint="#3286aa" />
+
+        <TextView
+            android:id="@+id/tvLoadingText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cargando configuraciones..."
+            android:textColor="#3286aa"
+            android:textSize="16sp"
+            android:layout_marginTop="8dp" />
     </LinearLayout>
-</ScrollView>
+
+</RelativeLayout>

@@ -13,68 +13,103 @@ import com.uv.taller365.workshopFiles.CreateWorkshop
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var database: DatabaseReference
     private lateinit var binding: ActivityLoginBinding
+    private lateinit var database: DatabaseReference
     private var isLoadingVisible: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        // Inflar el layout usando ViewBinding
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Inicializar base de datos
+        if (restaurarSesionSiExiste()) return
+
         database = FirebaseDatabase.getInstance().getReference("workshops")
 
-        // Acciones de botones
-        binding.buttonLogin.setOnClickListener {
-            val code = binding.editTextText.text.toString().trim().uppercase()
-            if (code.isEmpty()) {
-                Toast.makeText(this, "Ingresa un código", Toast.LENGTH_SHORT).show()
-                return@setOnClickListener
-            }
-
-            loginWithCode(code)
-        }
+        binding.buttonLogin.setOnClickListener { validarYLogin() }
 
         binding.buttonSign.setOnClickListener {
-            val intent = Intent(this, CreateWorkshop::class.java)
-            startActivity(intent)
+            startActivity(Intent(this, CreateWorkshop::class.java))
         }
     }
 
-    private fun loginWithCode(code: String) {
+    // ---------------------- Restaurar sesión previa ----------------------
+
+    private fun restaurarSesionSiExiste(): Boolean {
+        val prefs = getSharedPreferences("USER_PREFS", MODE_PRIVATE)
+        val storedWorkshopId = prefs.getString("WORKSHOP_ID", null)
+        val storedName = prefs.getString("USER_NAME", null)
+
+        if (storedWorkshopId != null && storedName != null) {
+            FirebaseDatabase.getInstance().getReference("workshops")
+                .child(storedWorkshopId)
+                .child("info")
+                .addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            startMainActivity(storedWorkshopId)
+                        } else {
+                            prefs.edit().clear().apply()
+                            Toast.makeText(this@LoginActivity, "Este taller ya no existe", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(this@LoginActivity, "Error al verificar taller", Toast.LENGTH_SHORT).show()
+                    }
+                })
+            return true
+        }
+        return false
+    }
+
+    // ---------------------- Validaciones y login ----------------------
+
+    private fun validarYLogin() {
+        val code = binding.editTextText.text.toString().trim().uppercase()
+        val emailOrName = binding.editTextEmailOrName.text.toString().trim()
+
+        if (code.isEmpty()) {
+            Toast.makeText(this, "Ingresa un código", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (emailOrName.isEmpty()) {
+            Toast.makeText(this, "Ingresa tu correo o tu nombre", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        loginWithCode(code, emailOrName)
+    }
+
+    private fun loginWithCode(code: String, emailOrName: String) {
         showLoading(true)
 
         database.orderByChild("info/code").equalTo(code)
             .addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    if (snapshot.exists()) {
-                        val tallerSnapshot = snapshot.children.first()
-                        val workshopId = tallerSnapshot.key ?: return
-                        val activo = tallerSnapshot.child("activo").getValue(Boolean::class.java) ?: true
-
-                        if (!activo) {
-                            showLoading(false)
-                            Toast.makeText(this@LoginActivity, "Este taller está desactivado.", Toast.LENGTH_SHORT).show()
-                            return
-                        }
-
-                        // Registrar hora de login
-                        val logRef = database.child("$workshopId/logins").push()
-                        logRef.setValue(System.currentTimeMillis())
-
-                        val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                        intent.putExtra("WORKSHOP_ID", workshopId)
+                    if (!snapshot.exists()) {
                         showLoading(false)
-                        startActivity(intent)
-                        finish()
-                    } else {
-                        showLoading(false)
-                        Toast.makeText(this@LoginActivity, "Código incorrecto", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@LoginActivity, "Código inválido", Toast.LENGTH_SHORT).show()
+                        return
                     }
+
+                    val tallerSnapshot = snapshot.children.first()
+                    val workshopId = tallerSnapshot.key ?: return
+
+                    val info = tallerSnapshot.child("info")
+                    val adminEmail = info.child("admin").getValue(String::class.java)
+                    val activo = info.child("activo").getValue(Boolean::class.java) ?: true
+
+                    if (!activo) {
+                        showLoading(false)
+                        Toast.makeText(this@LoginActivity, "Este taller está desactivado.", Toast.LENGTH_SHORT).show()
+                        return
+                    }
+
+                    guardarPreferenciasYContinuar(workshopId, emailOrName, adminEmail)
                 }
 
                 override fun onCancelled(error: DatabaseError) {
@@ -83,6 +118,42 @@ class LoginActivity : AppCompatActivity() {
                 }
             })
     }
+
+    private fun guardarPreferenciasYContinuar(workshopId: String, emailOrName: String, adminEmail: String?) {
+        val prefs = getSharedPreferences("USER_PREFS", MODE_PRIVATE).edit()
+        prefs.putString("WORKSHOP_ID", workshopId)
+
+        val esAdmin = adminEmail != null && emailOrName.equals(adminEmail, ignoreCase = true)
+
+        if (esAdmin) {
+            prefs.putString("USER_NAME", "Administrador")
+            prefs.putString("USER_ROLE", "admin")
+        } else {
+            prefs.putString("USER_NAME", emailOrName)
+            prefs.putString("USER_ROLE", "worker")
+            registrarUsuarioEnBase(workshopId, emailOrName)
+        }
+
+        prefs.apply()
+        showLoading(false)
+        startMainActivity(workshopId)
+    }
+
+    private fun registrarUsuarioEnBase(workshopId: String, nombre: String) {
+        val usuariosRef = database.child(workshopId).child("usuarios")
+        val nuevoUsuario = mapOf("nombre" to nombre, "timestamp" to System.currentTimeMillis())
+        usuariosRef.push().setValue(nuevoUsuario)
+    }
+
+    private fun startMainActivity(workshopId: String) {
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("WORKSHOP_ID", workshopId)
+        }
+        startActivity(intent)
+        finish()
+    }
+
+    // ---------------------- Pantalla de cargando ----------------------
 
     private fun showLoading(isLoading: Boolean) {
         isLoadingVisible = isLoading

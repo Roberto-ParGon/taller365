@@ -14,7 +14,18 @@ class FragmentStateAdapter(
     private val workshopId: String
 ) : FragmentStateAdapter(fragmentActivity) {
 
-    override fun getItemCount(): Int = 4
+    private var itemCount = 4
+    private var userRole: String = "admin"
+
+    fun setRole(role: String) {
+        userRole = role
+    }
+
+    fun setItemCount(count: Int) {
+        itemCount = count
+    }
+
+    override fun getItemCount(): Int = itemCount
 
     override fun createFragment(position: Int): Fragment {
         val bundle = Bundle().apply {
@@ -30,3 +41,4 @@ class FragmentStateAdapter(
         }
     }
 }
+
