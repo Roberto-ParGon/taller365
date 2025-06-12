@@ -43,152 +43,18 @@
                     android:text="Resumen de Reparación"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
-
             </LinearLayout>
-
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
-    <ScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvSummary"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="16dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/Offwhite"
-                app:cardCornerRadius="8dp"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/imgFordKa"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginRight="12dp"
-                        android:contentDescription="Puertas"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/car_door" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Puertas"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Tipo: Delantera derecha"
-                            android:textColor="@color/black"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Notas: Notas extra"
-                            android:textColor="@color/black"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="$ 1000"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="@color/Offwhite"
-                app:cardElevation="4dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="8dp">
-
-                    <ImageView
-                        android:id="@+id/imgChevyPop"
-                        android:layout_width="80dp"
-                        android:layout_height="80dp"
-                        android:layout_marginRight="12dp"
-                        android:contentDescription="Cajuela"
-                        android:scaleType="centerCrop"
-                        android:src="@drawable/car_trunk" />
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Cajuela"
-                            android:textColor="@color/black"
-                            android:textSize="18sp"
-                            android:textStyle="bold"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="4dp"
-                            android:text="Tipo: Cajuela"
-                            android:textColor="@color/black"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Notas: Sacar golpe"
-                            android:textColor="@color/black"/>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="$ 2000"
-                            android:textColor="@color/black"
-                            android:textSize="16sp"
-                            android:textStyle="bold"/>
-
-                    </LinearLayout>
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
+        android:padding="16dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_repair_summary"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -218,11 +84,12 @@
                 android:textSize="16sp"/>
 
             <TextView
+                android:id="@+id/tvTotalCost"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="end"
-                android:text="$ 3000"
+                android:text="$ 0.00"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"/>
@@ -239,10 +106,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:text="Confirmar"
+        android:backgroundTint="@color/green"
+        android:text="Confirmar y Registrar Vehículo"
         android:textAllCaps="false"
         android:textSize="16sp"
-        android:backgroundTint="@color/blue"
         android:textColor="@color/white"
         app:cornerRadius="8dp"/>
 </LinearLayout>

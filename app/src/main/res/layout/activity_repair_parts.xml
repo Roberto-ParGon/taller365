@@ -5,8 +5,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
@@ -43,313 +43,103 @@
                     android:text="Seleccionar partes afectadas"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
-
             </LinearLayout>
-
         </androidx.appcompat.widget.Toolbar>
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_marginTop="30dp"
         android:padding="16dp">
 
-        <LinearLayout
+        <GridLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:columnCount="2"
+            android:useDefaultMargins="true">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardPuertas"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_door" android:contentDescription="Puertas"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Puertas" />
+                    <TextView android:id="@+id/tvPuertasSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCofre"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_bonnet" android:contentDescription="Cofre"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Cofre" />
+                    <TextView android:id="@+id/tvCofreSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCajuela"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_trunk" android:contentDescription="Cajuela"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Cajuela" />
+                    <TextView android:id="@+id/tvCajuelaSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Puertas"
-                            android:src="@drawable/car_door" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardToldo"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_toldo" android:contentDescription="Toldo"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Toldo" />
+                    <TextView android:id="@+id/tvToldoSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbPuertas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Puertas"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardFacias"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_bumper" android:contentDescription="Facias"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Facias" />
+                    <TextView android:id="@+id/tvFaciasSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardSalpicaderas"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_fender" android:contentDescription="Salpicaderas"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Salpicaderas" />
+                    <TextView android:id="@+id/tvSalpicaderasSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardRetrovisores"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_rearview_mirror" android:contentDescription="Retrovisores"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Retrovisores" />
+                    <TextView android:id="@+id/tvRetrovisoresSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Cofre"
-                            android:src="@drawable/car_bonnet" />
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardCristales"
+                style="@style/RepairPartCard">
+                <LinearLayout style="@style/RepairPartCardLayout">
+                    <ImageView style="@style/RepairPartIcon" android:src="@drawable/car_wiper" android:contentDescription="Marco de Cristales"/>
+                    <TextView style="@style/RepairPartTitle" android:text="Marco de Cristales" />
+                    <TextView android:id="@+id/tvCristalesSelection" style="@style/RepairPartSelection" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbCofre"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Cofre"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginTop="8dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Cajuela"
-                            android:src="@drawable/car_trunk" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbCajuela"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Cajuela"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="76dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Toldo"
-                            android:src="@drawable/car_toldo" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbToldo"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Toldo"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginTop="8dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Facias"
-                            android:src="@drawable/car_bumper" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbFacias"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Facias"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Salpicaderas"
-                            android:src="@drawable/car_fender" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbSalpicaderas"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Salpicaderas"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:weightSum="2"
-                android:layout_marginTop="8dp">
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="64dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Retrovisores"
-                            android:src="@drawable/car_rearview_mirror" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbRetrovisores"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Retrovisores"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-
-                <androidx.cardview.widget.CardView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="4dp"
-                    app:cardCornerRadius="8dp"
-                    app:cardElevation="4dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@color/white"
-                        android:gravity="center"
-                        android:orientation="vertical"
-                        android:padding="8dp">
-
-                        <ImageView
-                            android:layout_width="88dp"
-                            android:layout_height="64dp"
-                            android:contentDescription="Marco de cristales"
-                            android:src="@drawable/car_wiper" />
-
-                        <com.google.android.material.checkbox.MaterialCheckBox
-                            android:id="@+id/cbMarcoCristales"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Marco de cristales"
-                            android:textColor="@color/black" />
-                    </LinearLayout>
-                </androidx.cardview.widget.CardView>
-            </LinearLayout>
-
-        </LinearLayout>
+        </GridLayout>
     </ScrollView>
 
     <com.google.android.material.button.MaterialButton
@@ -357,13 +147,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
+        android:backgroundTint="@color/blue"
         android:text="Siguiente"
         android:textAllCaps="false"
+        android:textColor="@color/white"
         android:textSize="16sp"
+        app:cornerRadius="8dp"
         app:icon="@drawable/ic_arrow_forward_24px"
         app:iconGravity="textEnd"
-        app:iconTint="@color/white"
-        android:backgroundTint="@color/blue"
-        android:textColor="@color/white"
-        app:cornerRadius="8dp"/>
+        app:iconTint="@color/white" />
 </LinearLayout>
