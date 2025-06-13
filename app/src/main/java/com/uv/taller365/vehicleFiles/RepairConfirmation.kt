@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -19,6 +20,7 @@ import com.google.android.material.button.MaterialButton
 import com.uv.taller365.MainActivity
 import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
+import com.uv.taller365.helpers.CustomDialogHelper
 import com.uv.taller365.helpers.uploadImageToSupabase
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
@@ -28,6 +30,9 @@ class RepairConfirmation : AppCompatActivity() {
 
     private lateinit var summaryAdapter: SummaryAdapter
     private lateinit var firebaseConnection: FirebaseConnection
+
+    private lateinit var loadingContainer: LinearLayout
+    private var isLoadingVisible: Boolean = false
 
     private var damagedParts: ArrayList<DamagedPart> = arrayListOf()
     private var vehicleData: Vehicle? = null
@@ -39,6 +44,8 @@ class RepairConfirmation : AppCompatActivity() {
         setContentView(R.layout.activity_repair_confirmation)
 
         firebaseConnection = FirebaseConnection()
+
+        loadingContainer = findViewById(R.id.loadingContainer)
 
         workshopId = intent.getStringExtra("WORKSHOP_ID")
         vehicleData = intent.getParcelableExtra("VEHICLE_DATA")
@@ -77,7 +84,7 @@ class RepairConfirmation : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            Toast.makeText(this, "Registrando, por favor espera...", Toast.LENGTH_SHORT).show()
+            showLoading(true)
 
             lifecycleScope.launch {
                 val imageUrl = imageUriString?.let {
@@ -91,19 +98,56 @@ class RepairConfirmation : AppCompatActivity() {
                 vehicleData!!.imageUrl = imageUrl
 
                 firebaseConnection.writeNewVehicleWithDamages(workshopId!!, vehicleData!!, damagedParts) { success ->
-
+                    showLoading(false)
                     if (success) {
-                        Toast.makeText(this@RepairConfirmation, "Vehículo registrado con éxito", Toast.LENGTH_LONG).show()
-
-                        val intent = Intent(this@RepairConfirmation, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        intent.putExtra("WORKSHOP_ID", workshopId)
-                        startActivity(intent)
+                        CustomDialogHelper.showInfoDialog(
+                            activity = this@RepairConfirmation,
+                            title = "Éxito",
+                            message = "Vehículo registrado exitosamente",
+                            iconResId = R.drawable.ic_success_24px,
+                            buttonText = "Aceptar"
+                        ) {
+                            val intent = Intent(this@RepairConfirmation, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.putExtra("WORKSHOP_ID", workshopId)
+                            startActivity(intent)
+                        }
                     } else {
-                        Toast.makeText(this@RepairConfirmation, "Error al guardar en la base de datos", Toast.LENGTH_LONG).show()
+                        CustomDialogHelper.showInfoDialog(
+                            activity = this@RepairConfirmation,
+                            title = "Error",
+                            message = "Error al guardar en la base de datos. Inténtalo de nuevo.",
+                            iconResId = R.drawable.ic_error_24px,
+                            buttonText = "Entendido"
+                        )
                     }
                 }
             }
+        }
+    }
+
+    private fun showLoading(isLoading: Boolean) {
+        isLoadingVisible = isLoading
+
+        if (isLoading) {
+            window.setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        } else {
+            window.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
+        }
+
+        loadingContainer.visibility = if (isLoading) View.VISIBLE else View.GONE
+        findViewById<MaterialButton>(R.id.btnConfirm).isEnabled = !isLoading
+
+        window.decorView.systemUiVisibility = if (isLoading) {
+            View.SYSTEM_UI_FLAG_FULLSCREEN or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+        } else {
+            View.SYSTEM_UI_FLAG_VISIBLE
+        }
+    }
+
+    override fun onBackPressed() {
+        if (!isLoadingVisible) {
+            super.onBackPressed()
         }
     }
 

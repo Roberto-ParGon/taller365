@@ -4,7 +4,8 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAFBFD">
+    android:background="#FAFBFD"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -175,7 +176,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
                     android:background="@drawable/bg_edit_text"
-                    android:hint="Ingrese la fecha de llegada"
+                    android:clickable="true"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="Seleccione la fecha de llegada"
                     android:textColor="@color/black"
                     android:textColorHint="#888888"
                     android:textSize="16sp" />

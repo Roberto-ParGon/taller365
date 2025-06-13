@@ -193,10 +193,13 @@ class VehicleForm : AppCompatActivity() {
     private fun setupDatePicker() {
         binding.etArrivalDate.setOnClickListener {
             val calendar = Calendar.getInstance()
-            DatePickerDialog(this, { _, year, month, day ->
+            val datePickerDialog = DatePickerDialog(this, { _, year, month, day ->
                 val selectedDate = Calendar.getInstance().apply { set(year, month, day) }
                 binding.etArrivalDate.setText(dateFormat.format(selectedDate.time))
-            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show()
+            }, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH))
+
+            datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+            datePickerDialog.show()
         }
     }
     private fun setupImagePicker() {
