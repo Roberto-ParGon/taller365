@@ -4,11 +4,13 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.database.*
 import com.uv.taller365.databinding.ActivityLoginBinding
+import com.uv.taller365.helpers.CustomDialogHelper
 import com.uv.taller365.workshopFiles.CreateWorkshop
 
 class LoginActivity : AppCompatActivity() {
@@ -16,6 +18,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
     private lateinit var database: DatabaseReference
     private var isLoadingVisible: Boolean = false
+    private lateinit var loadingContainer: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,6 +26,8 @@ class LoginActivity : AppCompatActivity() {
 
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        loadingContainer = super.findViewById(R.id.loadingContainer)
 
         if (restaurarSesionSiExiste()) return
 
@@ -92,7 +97,13 @@ class LoginActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (!snapshot.exists()) {
                         showLoading(false)
-                        Toast.makeText(this@LoginActivity, "Código inválido", Toast.LENGTH_SHORT).show()
+                        CustomDialogHelper.showInfoDialog(
+                            activity = this@LoginActivity,
+                            title = "Error",
+                            message = "El código ingresado no es válido. Verifica el código",
+                            iconResId = R.drawable.ic_error_24px,
+                            buttonText = "Entendido"
+                        )
                         return
                     }
 
@@ -105,7 +116,13 @@ class LoginActivity : AppCompatActivity() {
 
                     if (!activo) {
                         showLoading(false)
-                        Toast.makeText(this@LoginActivity, "Este taller está desactivado.", Toast.LENGTH_SHORT).show()
+                        CustomDialogHelper.showInfoDialog(
+                            activity = this@LoginActivity,
+                            title = "Error",
+                            message = "Este taller ya no existe",
+                            iconResId = R.drawable.ic_error_24px,
+                            buttonText = "Entendido"
+                        )
                         return
                     }
 
@@ -114,7 +131,13 @@ class LoginActivity : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {
                     showLoading(false)
-                    Toast.makeText(this@LoginActivity, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
+                    CustomDialogHelper.showInfoDialog(
+                        activity = this@LoginActivity,
+                        title = "Error",
+                        message = "Error al iniciar sesión",
+                        iconResId = R.drawable.ic_error_24px,
+                        buttonText = "Entendido"
+                    )
                 }
             })
     }

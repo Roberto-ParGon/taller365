@@ -16,6 +16,7 @@ import com.uv.taller365.LoginActivity
 import com.uv.taller365.MainActivity
 import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
+import com.uv.taller365.helpers.CustomDialogHelper
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -78,7 +79,13 @@ class CreateWorkshop : AppCompatActivity() {
             val clipboard = getSystemService(CLIPBOARD_SERVICE) as ClipboardManager
             val clip = ClipData.newPlainText("Código Taller", codigoGenerado)
             clipboard.setPrimaryClip(clip)
-            Toast.makeText(this, "Código copiado al portapapeles", Toast.LENGTH_SHORT).show()
+            CustomDialogHelper.showInfoDialog(
+                activity = this@CreateWorkshop,
+                title = "Éxito",
+                message = "Código copiado al portapapeles correctamente.",
+                iconResId = R.drawable.ic_success_24px,
+                buttonText = "Aceptar"
+            )
         }
 
         btnAceptar.setOnClickListener {
@@ -100,7 +107,13 @@ class CreateWorkshop : AppCompatActivity() {
             val correo = correoEncargado.text.toString().trim()
 
             if (nombre.isBlank() || direccion.isBlank() || telefono.isBlank() || correo.isBlank()) {
-                Toast.makeText(this, "Por favor, completa todos los campos.", Toast.LENGTH_SHORT).show()
+                CustomDialogHelper.showInfoDialog(
+                    activity = this@CreateWorkshop,
+                    title = "Error",
+                    message = "Por favor, completa todos los campos.",
+                    iconResId = R.drawable.ic_error_24px,
+                    buttonText = "Entendido"
+                )
                 return@setOnClickListener
             }
 
@@ -118,7 +131,13 @@ class CreateWorkshop : AppCompatActivity() {
                     enviarCorreoCodigo(correo, nombre, codigoGenerado)
                     dialog.show()
                 } else {
-                    Toast.makeText(this, "Error al registrar el taller", Toast.LENGTH_SHORT).show()
+                    CustomDialogHelper.showInfoDialog(
+                        activity = this@CreateWorkshop,
+                        title = "Error",
+                        message = "Error al registrar el taller",
+                        iconResId = R.drawable.ic_error_24px,
+                        buttonText = "Entendido"
+                    )
                 }
             }
         }

@@ -26,8 +26,6 @@ class ModifyWorkshop : Fragment() {
     private lateinit var etDireccion: EditText
     private lateinit var etTelefono: EditText
     private lateinit var etCorreo: EditText
-
-    private lateinit var loadingContainer: LinearLayout
     private var isLoading = false
 
     @SuppressLint("MissingInflatedId")
@@ -35,7 +33,6 @@ class ModifyWorkshop : Fragment() {
         val view = inflater.inflate(R.layout.fragment_workshop_details, container, false)
         setupEdgeToEdge(view)
         setupViews(view)
-        showLoading(true)
 
         workshopId = activity?.intent?.getStringExtra("WORKSHOP_ID")
         workshopId?.let { id ->
@@ -62,7 +59,7 @@ class ModifyWorkshop : Fragment() {
 
         containerUsuarios = view.findViewById(R.id.containerUsuarios)
         usuariosScroll = view.findViewById(R.id.scrollUsuarios)
-        loadingContainer = view.findViewById(R.id.loadingContainer)
+
 
         view.findViewById<View>(R.id.btnLogout)?.setOnClickListener {
             activity?.finish()
@@ -87,11 +84,9 @@ class ModifyWorkshop : Fragment() {
                     etTelefono.setText(it.phone)
                     etCorreo.setText(it.email)
                 }
-                showLoading(false)
             },
             onError = {
                 Toast.makeText(requireContext(), "Error al cargar taller", Toast.LENGTH_SHORT).show()
-                showLoading(false)
             }
         )
     }
@@ -107,8 +102,6 @@ class ModifyWorkshop : Fragment() {
             return
         }
 
-        showLoading(true)
-
         workshopId?.let { id ->
             firebaseConnection.updateWorkshopInfo(
                 code = id,
@@ -117,13 +110,24 @@ class ModifyWorkshop : Fragment() {
                 phone = telefono,
                 email = correo
             ) { success ->
-                showLoading(false)
-                val msg = if (success) "Taller actualizado correctamente" else "Error al actualizar taller"
-                Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
-
+                CustomDialogHelper.showInfoDialog(
+                    activity = requireActivity(),
+                    title = "Cambios guardados",
+                    message = "Configuración actualizada correctamente.",
+                    iconResId = R.drawable.ic_success_24px,
+                    buttonText = "Aceptar"
+                )
                 if (success) {
                     val prefs = requireContext().getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
                     prefs.edit().clear().apply()
+                }else {
+                    CustomDialogHelper.showInfoDialog(
+                        activity = requireActivity(),
+                        title = "Error",
+                        message = "Error al actualizar información.",
+                        iconResId = R.drawable.ic_error_24px,
+                        buttonText = "Entendido"
+                    )
                 }
             }
         }
@@ -145,14 +149,14 @@ class ModifyWorkshop : Fragment() {
         workshopId?.let { id ->
             firebaseConnection.deleteWorkshop(id) { success ->
                 if (success) {
-                    Toast.makeText(requireContext(), "Taller eliminado", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Taller eliminado exitosamente", Toast.LENGTH_SHORT).show()
                     val prefs = requireActivity().getSharedPreferences("USER_PREFS", Context.MODE_PRIVATE)
                     prefs.edit().clear().apply()
                     val intent = Intent(requireContext(), LoginActivity::class.java)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                     startActivity(intent)
                 } else {
-                    Toast.makeText(requireContext(), "Error al eliminar taller", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(requireContext(), "Este taller ya no existe", Toast.LENGTH_SHORT).show()
                 }
             }
         }
@@ -170,8 +174,14 @@ class ModifyWorkshop : Fragment() {
                     containerUsuarios.addView(row)
                 }
             },
-            onError = {
-                Toast.makeText(requireContext(), "Error al cargar usuarios", Toast.LENGTH_SHORT).show()
+            onError = { exception ->
+                CustomDialogHelper.showInfoDialog(
+                    activity = requireActivity(),
+                    title = "Error",
+                    message = "Error al cargar usuarios: ${exception.message}",
+                    iconResId = R.drawable.ic_error_24px,
+                    buttonText = "Entendido"
+                )
             }
         )
     }
@@ -229,24 +239,23 @@ class ModifyWorkshop : Fragment() {
         workshopId?.let { id ->
             firebaseConnection.deleteUsuario(id, nombre) { success ->
                 if (success) {
-                    Toast.makeText(requireContext(), "Usuario eliminado", Toast.LENGTH_SHORT).show()
+                    CustomDialogHelper.showInfoDialog(
+                        activity = requireActivity(),
+                        title = "Usuario eliminado",
+                        message = "Usuario eliminado correctamente.",
+                        iconResId = R.drawable.ic_success_24px,
+                        buttonText = "Aceptar"
+                    )
                     cargarUsuarios(id)
                 } else {
-                    Toast.makeText(requireContext(), "Error al eliminar usuario", Toast.LENGTH_SHORT).show()
+                    CustomDialogHelper.showInfoDialog(
+                        activity = requireActivity(),
+                        title = "Error",
+                        message = "Error al eliminar usuario.",
+                        iconResId = R.drawable.ic_error_24px,
+                        buttonText = "Entendido"
+                    )
                 }
-            }
-        }
-    }
-
-    private fun showLoading(active: Boolean) {
-        isLoading = active
-        loadingContainer.visibility = if (active) View.VISIBLE else View.GONE
-
-        activity?.window?.apply {
-            if (active) {
-                setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
-            } else {
-                clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE)
             }
         }
     }
