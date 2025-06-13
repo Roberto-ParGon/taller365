@@ -1,6 +1,8 @@
 package com.uv.taller365.vehicleFiles
 
+import android.content.ActivityNotFoundException
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -23,6 +25,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.uv.taller365.R
 import com.uv.taller365.database.FirebaseConnection
 import com.uv.taller365.helpers.CustomDialogHelper
+import java.net.URLEncoder
 import java.util.*
 
 class VehiclesFragment : Fragment() {
@@ -70,6 +73,23 @@ class VehiclesFragment : Fragment() {
         )
     }
 
+    private fun enviarMensajeWhatsApp(marca: String, modelo: String, telefono: String) {
+        val context = requireContext()
+        val mensaje = "¡Hola! Tu vehículo '$marca $modelo' se encuentra listo para que pases a recogerlo. ¡Te esperamos en Taller365!"
+
+
+        val numeroLimpio = telefono.replace(Regex("[\\s-]"), "")
+        val numeroInternacional = if (numeroLimpio.startsWith("+")) numeroLimpio else "+52$numeroLimpio"
+
+        try {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse("https://api.whatsapp.com/send?phone=$numeroInternacional&text=${URLEncoder.encode(mensaje, "UTF-8")}")
+            startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            Toast.makeText(context, "WhatsApp no está instalado en este dispositivo.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     private fun showStatusUpdateDialog(vehicle: Vehicle) {
         val possibleActions: Array<String> = when (vehicle.status) {
             "En registro" -> arrayOf("Mover a Taller")
@@ -96,6 +116,18 @@ class VehiclesFragment : Fragment() {
                     firebaseConnection.updateVehicleStatus(workshopId!!, vehicle.id!!, newStatus) { success ->
                         if (success) {
                             Toast.makeText(context, "Estado actualizado a: $newStatus", Toast.LENGTH_SHORT).show()
+
+                            if (newStatus == "Listo para entregar") {
+                                val telefonoCliente = vehicle.clientPhone
+                                val marcaVehiculo = vehicle.brand
+                                val modeloVehiculo = vehicle.model
+
+                                if (!telefonoCliente.isNullOrEmpty() && !marcaVehiculo.isNullOrEmpty() && !modeloVehiculo.isNullOrEmpty()) {
+                                    enviarMensajeWhatsApp(marcaVehiculo, modeloVehiculo, telefonoCliente)
+                                } else {
+                                    Toast.makeText(context, "No se puede enviar el mensaje. Faltan datos del cliente o vehículo.", Toast.LENGTH_LONG).show()
+                                }
+                            }
                         } else {
                             Toast.makeText(context, "Error al actualizar el estado.", Toast.LENGTH_SHORT).show()
                         }
@@ -253,6 +285,8 @@ private class VehicleAdapter(
         holder.ivEdit.setOnClickListener { onEditClick(vehicle) }
         holder.ivDelete.setOnClickListener { onDeleteClick(vehicle) }
     }
+
+
 
     override fun getItemCount() = vehicles.size
 }

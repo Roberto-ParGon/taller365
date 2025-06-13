@@ -10,10 +10,10 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="111dp"
+        android:layout_height="wrap_content"
+        android:minHeight="111dp"
         android:padding="12dp">
 
-        <!-- Imagen redonda -->
         <ImageView
             android:id="@+id/ivVehicleImage"
             android:layout_width="70dp"
@@ -25,56 +25,61 @@
             android:scaleType="centerCrop"
             android:src="@drawable/bg_circle" />
 
-        <!-- Información de texto -->
         <LinearLayout
-            android:id="@+id/textContainer"
-            android:layout_width="0dp"
+            android:id="@+id/statusContainer"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
-            android:layout_marginStart="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_toEndOf="@id/ivVehicleImage"
+            android:gravity="center_horizontal"
             android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tvVehicleName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_semibold"
-                android:text="Chevy Pop 2002"
-                android:textColor="@color/black"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/tvBrand"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:fontFamily="@font/inter_medium"
-                android:text="Marca: Chevrolet"
-                android:textColor="@color/dark_gray"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/tvClientName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/inter_medium"
-                android:text="Nombre: Abisai Velasco"
-                android:textColor="@color/dark_gray"
-                android:textSize="14sp" />
 
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/inter_semibold"
-                android:text="Seguimiento: En taller"
-                android:textColor="@color/green"
+                android:text="En taller"
+                android:paddingHorizontal="10dp"
+                android:paddingVertical="4dp"
+                android:background="@drawable/bg_search"
+                android:textColor="@color/blue"
                 android:textSize="14sp"
                 android:textStyle="bold" />
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/textContainer"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_toStartOf="@id/statusContainer"
+            android:layout_toEndOf="@id/ivVehicleImage"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvClientName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Nombre del Cliente"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvVehicleName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:fontFamily="@font/inter_semibold"
+                android:text="Chevy Pop 2002"
+                android:textColor="@color/dark_gray"
+                android:textSize="15sp" />
+
         </LinearLayout>
 
     </RelativeLayout>

@@ -5,46 +5,46 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/white">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
-        android:layout_height="70dp">
+        android:layout_height="70dp"
+        android:elevation="0dp">  <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/blue"
+        android:theme="@style/NoToolBar">
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="@color/blue"
-            android:theme="@style/NoToolBar">
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="match_parent"
+            <ImageButton
+                android:id="@+id/btnBack"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="Volver"
+                android:src="@drawable/ic_arrow_back_24px"
+                app:tint="@color/white" />
+
+            <TextView
+                android:id="@+id/tvFormTittle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:layout_marginStart="60dp"
+                android:text="Información Cliente"
+                android:textColor="@color/white"
+                android:textSize="18sp" />
+        </LinearLayout>
 
-                <ImageButton
-                    android:id="@+id/btnBack"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Volver"
-                    android:src="@drawable/ic_arrow_back_24px"
-                    app:tint="@color/white" />
-
-                <TextView
-                    android:id="@+id/tvFormTittle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="60dp"
-                    android:text="Información Cliente"
-                    android:textColor="@color/white"
-                    android:textSize="18sp" />
-            </LinearLayout>
-
-        </androidx.appcompat.widget.Toolbar>
+    </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -73,13 +73,19 @@
                     android:orientation="vertical"
                     android:padding="20dp">
 
-                    <!-- Imagen estática (solo visual) -->
                     <FrameLayout
                         android:id="@+id/imageContainer"
                         android:layout_width="match_parent"
                         android:layout_height="160dp"
                         android:layout_marginBottom="20dp"
                         android:background="@drawable/bg_image_container">
+
+                        <ImageView
+                            android:id="@+id/ivVehicleImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:scaleType="centerCrop"
+                            android:contentDescription="Imagen del vehículo del cliente" />
 
                         <ImageView
                             android:id="@+id/placeholderImage"
@@ -90,7 +96,6 @@
                             android:src="@drawable/ic_upload_24px" />
                     </FrameLayout>
 
-                    <!-- Marca -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,7 +114,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Modelo -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -128,7 +132,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Fecha de llegada -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -147,7 +150,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="16dp" />
 
-                    <!-- Datos del cliente -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -175,7 +177,6 @@
                         android:textSize="16sp"
                         android:layout_marginBottom="20dp" />
 
-                    <!-- Seguimiento -->
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -193,6 +194,18 @@
                         android:textColor="@color/black"
                         android:textSize="16sp"
                         android:layout_marginBottom="8dp" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnNotifyWhatsApp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="24dp"
+                        android:backgroundTint="@color/green"
+                        android:text="Avisar estado por WhatsApp"
+                        app:icon="@drawable/ic_send"
+                        app:iconGravity="textStart"
+                        android:textColor="@color/white"
+                        app:cornerRadius="8dp"/>
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -44,6 +44,9 @@
             android:name=".vehicleFiles.RepairConfirmation"
             android:exported="false" />
         <activity
+            android:name=".client.ClientForm"
+            android:exported="false" />
+        <activity
             android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>

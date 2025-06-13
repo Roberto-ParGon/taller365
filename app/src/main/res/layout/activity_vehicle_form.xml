@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
-        <!-- AppBar -->
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
@@ -53,7 +52,6 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <!-- CardView -->
         <androidx.cardview.widget.CardView
             android:id="@+id/mainContainer"
             android:layout_width="match_parent"
@@ -74,7 +72,6 @@
                 android:orientation="vertical"
                 android:padding="20dp">
 
-                <!-- Contenedor para imagen -->
                 <FrameLayout
                     android:id="@+id/imageUploadContainer"
                     android:layout_width="match_parent"
@@ -84,7 +81,6 @@
                     android:clickable="true"
                     android:foreground="?android:attr/selectableItemBackground">
 
-                    <!-- ImageView para imagen grande que ocupa todo el contenedor -->
                     <ImageView
                         android:id="@+id/imageContainerImage"
                         android:layout_width="match_parent"
@@ -101,7 +97,6 @@
                         android:src="@drawable/ic_upload_24px" />
                 </FrameLayout>
 
-                <!-- EditText: Marca -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -123,7 +118,6 @@
                     android:textColorHint="#888888"
                     android:textSize="16sp" />
 
-                <!-- EditText: Modelo -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,7 +139,6 @@
                     android:textColorHint="#888888"
                     android:textSize="16sp" />
 
-                <!-- EditText: Número de serie -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -167,7 +160,6 @@
                     android:textColorHint="#888888"
                     android:textSize="16sp" />
 
-                <!-- EditText: Fecha de llegada -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -188,7 +180,6 @@
                     android:textColorHint="#888888"
                     android:textSize="16sp" />
 
-                <!-- EditText: Datos del Cliente -->
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -214,12 +205,11 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="4dp"
-                    android:text="Nombre del Cliente:"
+                    android:text="Número celular del Cliente:"
                     android:textColor="@color/black"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
-                <!-- EditText: Datos del Cliente -->
                 <EditText
                     android:id="@+id/etClientPhone"
                     android:layout_width="match_parent"
@@ -232,7 +222,6 @@
                     android:textColorHint="#888888"
                     android:textSize="16sp" />
 
-                <!-- Botón Guardar -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btnNext"
                     android:layout_width="match_parent"

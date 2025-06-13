@@ -1,11 +1,13 @@
 package com.uv.taller365.clientFiles
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
@@ -19,18 +21,23 @@ import com.bumptech.glide.Glide
 import com.uv.taller365.R
 import com.uv.taller365.client.ClientForm
 import com.uv.taller365.database.FirebaseConnection
+import com.uv.taller365.helpers.CustomDialogHelper
 import com.uv.taller365.vehicleFiles.Vehicle
+import java.util.Locale
 
 class ClientsFragment : Fragment() {
 
     private lateinit var vehicleAdapter: ClienteAdapter
-    private val clientVehiclesList = mutableListOf<Vehicle>()
+    private lateinit var searchInput: EditText
+
+    private val filteredVehiclesList = mutableListOf<Vehicle>()
     private val allVehiclesList = mutableListOf<Vehicle>()
 
     private var workshopId: String? = null
     private val firebaseConnection = FirebaseConnection()
 
-    @SuppressLint("MissingInflatedId")
+    private var currentStatusFilter: String = "Todos"
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,27 +47,39 @@ class ClientsFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_clients, container, false)
         view.setBackgroundColor(resources.getColor(R.color.white, null))
 
-        setupUI(view)
+        setupViews(view)
         setupRecyclerView(view)
         loadClientData()
 
         return view
     }
 
-    private fun setupUI(view: View) {
+    private fun setupViews(view: View) {
         view.findViewById<ImageButton>(R.id.btnLogout)?.setOnClickListener {
             activity?.supportFragmentManager?.popBackStack()
         }
 
+        searchInput = view.findViewById(R.id.searchInput)
+        searchInput.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                filterClientList()
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        view.findViewById<ImageButton>(R.id.btnFilter).setOnClickListener {
+            showStatusFilterDialog()
+        }
     }
 
     private fun setupRecyclerView(view: View) {
         val recyclerView = view.findViewById<RecyclerView>(R.id.recyclerView)
         recyclerView.layoutManager = LinearLayoutManager(context)
-        vehicleAdapter = ClienteAdapter(clientVehiclesList)
+        vehicleAdapter = ClienteAdapter(filteredVehiclesList)
         recyclerView.adapter = vehicleAdapter
         recyclerView.addItemDecoration(
-            DividerItemDecoration(context, DividerItemDecoration.VERTICAL).apply {
+            DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL).apply {
                 ContextCompat.getDrawable(requireContext(), R.drawable.list_divider)?.let {
                     setDrawable(it)
                 }
@@ -79,17 +98,45 @@ class ClientsFragment : Fragment() {
             onResult = { vehicles ->
                 allVehiclesList.clear()
                 allVehiclesList.addAll(vehicles)
-
-                val uniqueClients = vehicles.distinctBy { it.clientName to it.clientPhone }
-
-                clientVehiclesList.clear()
-                clientVehiclesList.addAll(uniqueClients)
-                vehicleAdapter.notifyDataSetChanged()
+                filterClientList()
             },
             onError = { exception ->
                 Toast.makeText(context, "Error al cargar clientes: ${exception.message}", Toast.LENGTH_SHORT).show()
             }
         )
+    }
+
+    private fun filterClientList() {
+        val searchQuery = searchInput.text.toString().lowercase(Locale.getDefault())
+
+        val filtered = allVehiclesList.filter { vehicle ->
+            val statusMatch = when (currentStatusFilter) {
+                "Todos" -> true
+                else -> vehicle.status.equals(currentStatusFilter, ignoreCase = true)
+            }
+
+            val searchMatch = if (searchQuery.isEmpty()) {
+                true
+            } else {
+                vehicle.brand?.lowercase(Locale.getDefault())?.contains(searchQuery) == true ||
+                        vehicle.model?.lowercase(Locale.getDefault())?.contains(searchQuery) == true ||
+                        vehicle.clientName?.lowercase(Locale.getDefault())?.contains(searchQuery) == true
+            }
+
+            statusMatch && searchMatch
+        }
+
+        filteredVehiclesList.clear()
+        filteredVehiclesList.addAll(filtered)
+        vehicleAdapter.notifyDataSetChanged()
+    }
+
+    private fun showStatusFilterDialog() {
+        val statuses = listOf("Todos", "En registro", "En taller", "Listo para entregar", "Entregado")
+        CustomDialogHelper.showFilterDialog(requireActivity(), statuses, currentStatusFilter) { selectedStatus ->
+            currentStatusFilter = selectedStatus
+            filterClientList()
+        }
     }
 
     private inner class ClienteAdapter(private val vehicles: List<Vehicle>) :
@@ -98,7 +145,6 @@ class ClientsFragment : Fragment() {
         inner class ClienteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val ivVehicleImage: ImageView = itemView.findViewById(R.id.ivVehicleImage)
             val tvVehicleName: TextView = itemView.findViewById(R.id.tvVehicleName)
-            val tvBrand: TextView = itemView.findViewById(R.id.tvBrand)
             val tvClientName: TextView = itemView.findViewById(R.id.tvClientName)
             val tvStatus: TextView = itemView.findViewById(R.id.tvStatus)
         }
@@ -121,9 +167,8 @@ class ClientsFragment : Fragment() {
                 .into(holder.ivVehicleImage)
 
             holder.tvVehicleName.text = vehicle.name
-            holder.tvBrand.text = "Marca: ${vehicle.brand}"
-            holder.tvClientName.text = "Nombre del cliente: ${vehicle.clientName}"
-            holder.tvStatus.text = "Seguimiento: ${vehicle.status}"
+            holder.tvClientName.text = "${vehicle.clientName}"
+            holder.tvStatus.text = "${vehicle.status}"
 
             holder.tvStatus.setTextColor(
                 ContextCompat.getColor(holder.itemView.context, vehicle.getStatusColor(holder.itemView.context))
