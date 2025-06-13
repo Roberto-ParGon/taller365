@@ -2,6 +2,7 @@ package com.uv.taller365
 
 import android.os.Bundle
 import android.view.View
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.viewpager2.widget.ViewPager2
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var bottomNav: BottomNavigationView
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: FragmentStateAdapter
+    private lateinit var loadingContainer: LinearLayout
     private lateinit var workshopId: String
     private var userRole: String = "worker"
 
@@ -39,6 +41,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun inicializarViews() {
+        loadingContainer = super.findViewById(R.id.loadingContainer)
         bottomNav = findViewById(R.id.bottomNav)
         viewPager = findViewById(R.id.viewpager)
     }
